@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <string>
+#include "BlockingQueueResource.h"
 #define SUCCESS 0
 #define ERROR 1
 #define ARG_COUNT 3
