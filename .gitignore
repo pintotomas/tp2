@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+cpplint.py
+execute.sh
+filter_options
+mapa.txt
+tp
+trabajadores.txt
