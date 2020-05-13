@@ -6,6 +6,7 @@
 #include <string>
 #include "BlockingQueueResource.h"
 #include "Gatherer.h"
+#include "Inventory.h"
 
 #define SUCCESS 0
 #define ERROR 1
@@ -51,11 +52,12 @@ std::map<std::string, int> parse_workers(std::ifstream& stream) {
 }
 
 std::vector<Gatherer *> generate_gatherers(int quantity,
-                                      BlockingQueueResource *queue) {
+                                      BlockingQueueResource *queue,
+                                      Inventory *inventory) {
 
   std::vector<Gatherer *> gatherers(quantity);
   for (int i = 0; i < quantity; i++) {
-    gatherers[i] = new Gatherer(queue);
+    gatherers[i] = new Gatherer(queue, inventory);
     gatherers[i]->start();
   }
   return gatherers;
@@ -91,9 +93,10 @@ int main(int argc, char *argv[]) {
     BlockingQueueResource queue_trigo;
     BlockingQueueResource queue_madera;
     BlockingQueueResource queue_minerales;
-    std::vector<Gatherer *> agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo);
-    std::vector<Gatherer *> leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera);
-    std::vector<Gatherer *> mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales);
+    Inventory inventory;
+    std::vector<Gatherer *> agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo, &inventory);
+    std::vector<Gatherer *> leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera, &inventory);
+    std::vector<Gatherer *> mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales, &inventory);
     parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
     queue_trigo.close();
     queue_madera.close();
@@ -102,8 +105,13 @@ int main(int argc, char *argv[]) {
     join_and_destroy_gatherers(leniadores);
     join_and_destroy_gatherers(mineros);
 
-
-
+    /*
+    Imprimo recursos totales
+    */
+    std::cout << "Trigo recolectado: " << inventory.get_trigo() << std::endl;
+    std::cout << "Hierro recolectado: " << inventory.get_hierro() << std::endl;
+    std::cout << "Carbon recolectado: " << inventory.get_carbon() << std::endl;
+    std::cout << "Madera recolectado: " << inventory.get_madera() << std::endl;
 
     // print content:
       // std::cout << "elements in mymap:" << '\n';

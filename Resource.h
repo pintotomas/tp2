@@ -12,15 +12,15 @@ inline const char* to_string(Resource resource) {
 
   switch (resource) {
     case Resource::trigo:
-      return "trigo";
+      return TRIGO;
     case Resource::madera:
-      return "madera";
+      return MADERA;
     case Resource::carbon:
-      return "carbon";
+      return CARBON;
     case Resource::hierro:
-      return "hierro";
+      return HIERRO;
     default:
-      return "default";
+      return "";
   }
 }
 

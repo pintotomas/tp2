@@ -11,7 +11,7 @@ class Inventory {
  private:
   std::mutex mutex;
   std::condition_variable cv;
-  int lenia;
+  int trigo;
   int carbon;
   int madera;
   int hierro;
@@ -20,11 +20,15 @@ class Inventory {
   Inventory();
   ~Inventory();
   void add(Resource material);
+  int get_carbon();
+  int get_trigo();
+  int get_madera();
+  int get_hierro();
   //Resource pop();
   //void close();
   //Elimino constructor por copia y por movimiento
-  Inventory(const BlockingQueueResource &) = delete;
-  Inventory &operator=(const BlockingQueueResource &) = delete;
+  Inventory(const Inventory &) = delete;
+  Inventory &operator=(const Inventory &) = delete;
 
 };
 
