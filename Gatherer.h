@@ -3,16 +3,16 @@
 
 #include "Thread.h"
 #include "BlockingQueueResource.h"
-#include "Inventory.h"
+#include "InventoryMonitor.h"
 
 class Gatherer : public Thread {
  public:
-  explicit Gatherer(BlockingQueueResource *queue, Inventory *inventory);
+  explicit Gatherer(BlockingQueueResource *queue, InventoryMonitor *inventory_monitor);
   void run();
 
  private:
   BlockingQueueResource *queue;
-  Inventory *inventory;
+  InventoryMonitor *inventory_monitor;
 };
 
 

@@ -2,19 +2,18 @@
 #include "string.h"
 
 Inventory::Inventory()
-    : mutex(), cv(), trigo(0), carbon(0), madera(0), hierro(0) {}
+    : trigo(0), carbon(0), madera(0), hierro(0) {}
 
 Inventory::~Inventory() {}
 
 void Inventory::add(Resource resource) {
 
-  std::unique_lock<std::mutex> lock(mutex);
   std::string resource_description = to_string(resource);
   if(resource_description == TRIGO) this->trigo++;
   if(resource_description == MADERA) this->madera++; 
   if(resource_description == CARBON) this->carbon++; 
   if(resource_description == HIERRO) this->hierro++; 
-  cv.notify_all();
+  
 }
 
 int Inventory::get_carbon() {

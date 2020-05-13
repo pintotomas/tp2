@@ -9,8 +9,8 @@
 
 class Inventory {
  private:
-  std::mutex mutex;
-  std::condition_variable cv;
+  // std::mutex mutex;
+  // std::condition_variable cv;
   int trigo;
   int carbon;
   int madera;
