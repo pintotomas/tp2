@@ -19,7 +19,7 @@ class BlockingQueueResource {
   BlockingQueueResource();
   ~BlockingQueueResource();
   void push(Resource material);
-  Resource *pop();
+  Resource pop();
   void close();
   //Elimino constructor por copia y por movimiento
   BlockingQueueResource(const BlockingQueueResource &) = delete;

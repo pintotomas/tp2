@@ -5,6 +5,8 @@
 #include <map>
 #include <string>
 #include "BlockingQueueResource.h"
+#include "Gatherer.h"
+
 #define SUCCESS 0
 #define ERROR 1
 #define ARG_COUNT 3
@@ -48,6 +50,36 @@ std::map<std::string, int> parse_workers(std::ifstream& stream) {
     return workers;
 }
 
+std::vector<Gatherer *> generate_gatherers(int quantity,
+                                      BlockingQueueResource *queue) {
+
+  std::vector<Gatherer *> gatherers(quantity);
+  for (int i = 0; i < quantity; i++) {
+    gatherers[i] = new Gatherer(queue);
+    gatherers[i]->start();
+  }
+  return gatherers;
+}
+
+void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
+
+  for(auto gatherer = gatherers.begin(); gatherer != gatherers.end(); gatherer++){
+    (*gatherer)->join();
+    delete *gatherer;
+
+  }
+}
+
+void parse_map(std::ifstream& stream, BlockingQueueResource *queue_trigo, BlockingQueueResource *queue_madera, BlockingQueueResource *queue_minerales) {
+  char ch;
+  while (stream >> std::noskipws >> ch) {
+    if (ch == 'T') queue_trigo->push(Resource::trigo);
+    else if (ch == 'M') queue_madera->push(Resource::madera);
+    else if (ch == 'C') queue_minerales->push(Resource::carbon);
+    else if (ch == 'H') queue_minerales->push(Resource::hierro);
+  }
+}
+
 int main(int argc, char *argv[]) {
     if (!valid_arguments(argc)) return ERROR;
     std::ifstream workers_file(argv[1]);
@@ -55,13 +87,31 @@ int main(int argc, char *argv[]) {
     if (!valid_stream(workers_file)) return ERROR;
     if (!valid_stream(map_file)) return ERROR;
     std::map<std::string, int> workers = parse_workers(workers_file);
+
+    BlockingQueueResource queue_trigo;
+    BlockingQueueResource queue_madera;
+    BlockingQueueResource queue_minerales;
+    std::vector<Gatherer *> agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo);
+    std::vector<Gatherer *> leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera);
+    std::vector<Gatherer *> mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales);
+    parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
+    queue_trigo.close();
+    queue_madera.close();
+    queue_minerales.close();
+    join_and_destroy_gatherers(agricultores);
+    join_and_destroy_gatherers(leniadores);
+    join_and_destroy_gatherers(mineros);
+
+
+
+
     // print content:
-      std::cout << "elements in mymap:" << '\n';
-      std::cout << "Agricultores => " << workers.find("Agricultores")->second << '\n';
-      std::cout << "Leniadores => " << workers.find("Leniadores")->second << '\n';
-      std::cout << "Cocineros => " << workers.find("Cocineros")->second << '\n';
-      std::cout << "Carpinteros => " << workers.find("Carpinteros")->second << '\n';
-      std::cout << "Armeros => " << workers.find("Armeros")->second << '\n';
+      // std::cout << "elements in mymap:" << '\n';
+      // std::cout << "Agricultores => " << workers.find("Agricultores")->second << '\n';
+      // std::cout << "Leniadores => " << workers.find("Leniadores")->second << '\n';
+      // std::cout << "Cocineros => " << workers.find("Cocineros")->second << '\n';
+      // std::cout << "Carpinteros => " << workers.find("Carpinteros")->second << '\n';
+      // std::cout << "Armeros => " << workers.find("Armeros")->second << '\n';
 
     return SUCCESS;
 }

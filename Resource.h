@@ -1,23 +1,26 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
 
-#define TRIGO 1
-#define MADERA 2
-#define CARBON 3
-#define HIERRO 4
-
+#define TRIGO "trigo"
+#define MADERA "madera"
+#define CARBON "carbon"
+#define HIERRO "hierro"
+#include <iostream>
 enum class Resource { trigo, madera, carbon, hierro };
 
-inline const int toInt(Resource resource) {
+inline const char* to_string(Resource resource) {
+
   switch (resource) {
     case Resource::trigo:
-      return TRIGO;
+      return "trigo";
     case Resource::madera:
-      return MADERA;
+      return "madera";
     case Resource::carbon:
-      return CARBON;
+      return "carbon";
     case Resource::hierro:
-      return HIERRO;
+      return "hierro";
+    default:
+      return "default";
   }
 }
 
