@@ -12,15 +12,17 @@ class InventoryMonitor {
   std::mutex mutex;
   std::condition_variable cv;
   Inventory *inventory;
+  int gatherers_working;
   // int trigo;
   // int carbon;
   // int madera;
   // int hierro;
  protected:
  public:
-  InventoryMonitor(Inventory *inventory);
+  InventoryMonitor(Inventory *inventory, int gatherers_working);
   ~InventoryMonitor();
   void add(Resource material);
+  void stop_one_worker();
   // int get_carbon();
   // int get_trigo();
   // int get_madera();

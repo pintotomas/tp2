@@ -89,12 +89,14 @@ int main(int argc, char *argv[]) {
     if (!valid_stream(workers_file)) return ERROR;
     if (!valid_stream(map_file)) return ERROR;
     std::map<std::string, int> workers = parse_workers(workers_file);
-
+    int gatherers_quantity = workers.find("Agricultores")->second +
+                             workers.find("Leniadores")->second +
+                             workers.find("Mineros")->second;
     BlockingQueueResource queue_trigo;
     BlockingQueueResource queue_madera;
     BlockingQueueResource queue_minerales;
     Inventory inventory;
-    InventoryMonitor inventory_monitor(&inventory);
+    InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
     std::vector<Gatherer *> agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo, &inventory_monitor);
     std::vector<Gatherer *> leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera, &inventory_monitor);
     std::vector<Gatherer *> mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales, &inventory_monitor);

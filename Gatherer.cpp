@@ -20,6 +20,7 @@ void Gatherer::run() {
   		//std::cout << "Recolecte: " << to_string(resource) << '\n';
       this->inventory_monitor->add(resource);
   	} catch (ClosedQueueException) {
+      this->inventory_monitor->stop_one_worker();
   		break;
   	}
     // Resource *resource = this->queue->pop();
