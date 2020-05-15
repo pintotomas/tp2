@@ -6,6 +6,7 @@
 #include <string>
 #include "BlockingQueueResource.h"
 #include "Gatherer.h"
+#include "Producer.h"
 #include "InventoryMonitor.h"
 
 #define SUCCESS 0
@@ -63,11 +64,32 @@ std::vector<Gatherer *> generate_gatherers(int quantity,
   return gatherers;
 }
 
+
+std::vector<Producer *> generate_producers(int quantity,
+                                      InventoryMonitor *inventory_monitor) {
+
+  std::vector<Producer *> producers(quantity);
+  for (int i = 0; i < quantity; i++) {
+    producers[i] = new Producer(inventory_monitor);
+    producers[i]->start();
+  }
+  return producers;
+}
+
 void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
 
   for(auto gatherer = gatherers.begin(); gatherer != gatherers.end(); gatherer++){
     (*gatherer)->join();
     delete *gatherer;
+
+  }
+}
+
+void join_and_destroy_producers(std::vector<Producer *> producers) {
+
+  for(auto producer = producers.begin(); producer != producers.end(); producer++){
+    (*producer)->join();
+    delete *producer;
 
   }
 }
@@ -100,6 +122,12 @@ int main(int argc, char *argv[]) {
     std::vector<Gatherer *> agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo, &inventory_monitor);
     std::vector<Gatherer *> leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera, &inventory_monitor);
     std::vector<Gatherer *> mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales, &inventory_monitor);
+
+    std::vector<Producer *> cocineros = generate_producers(workers.find("Cocineros")->second, &inventory_monitor);
+    std::vector<Producer *> carpinteros = generate_producers(workers.find("Carpinteros")->second, &inventory_monitor);
+    std::vector<Producer *> armeros = generate_producers(workers.find("Armeros")->second, &inventory_monitor);
+
+
     parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
     queue_trigo.close();
     queue_madera.close();
@@ -108,6 +136,9 @@ int main(int argc, char *argv[]) {
     join_and_destroy_gatherers(leniadores);
     join_and_destroy_gatherers(mineros);
 
+    join_and_destroy_producers(cocineros);
+    join_and_destroy_producers(carpinteros);
+    join_and_destroy_producers(armeros);
     /*
     Imprimo recursos totales
     */

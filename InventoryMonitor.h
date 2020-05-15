@@ -23,6 +23,7 @@ class InventoryMonitor {
   ~InventoryMonitor();
   void add(Resource material);
   void stop_one_worker();
+  bool is_active();
   // int get_carbon();
   // int get_trigo();
   // int get_madera();

@@ -6,13 +6,16 @@
 #include "InventoryMonitor.h"
 
 class Gatherer : public Thread {
- public:
-  explicit Gatherer(BlockingQueueResource *queue, InventoryMonitor *inventory_monitor);
-  void run();
-
  private:
   BlockingQueueResource *queue;
   InventoryMonitor *inventory_monitor;
+
+ public:
+  explicit Gatherer(BlockingQueueResource *queue, InventoryMonitor *inventory_monitor);
+  void run();
+  //Elimino constructor por copia y por movimiento
+  Gatherer(const Gatherer &) = delete;
+  Gatherer &operator=(const Gatherer &) = delete;
 };
 
 
