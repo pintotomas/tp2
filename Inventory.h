@@ -19,7 +19,7 @@ class Inventory {
  public:
   Inventory();
   ~Inventory();
-  void add(Resource material);
+  void add(const Resource material);
   int get_carbon();
   int get_trigo();
   int get_madera();

@@ -6,7 +6,7 @@ Inventory::Inventory()
 
 Inventory::~Inventory() {}
 
-void Inventory::add(Resource resource) {
+void Inventory::add(const Resource resource) {
   std::string resource_description = to_string(resource);
   if (resource_description == TRIGO) this->trigo++;
   if (resource_description == MADERA) this->madera++; 
