@@ -8,5 +8,7 @@ std::map<Resource, int > carpenter_requirements =	{
 	{ Resource::madera, 3 }
 };
 
+int carpenter_benefit_points = 2;
+
 Carpenter::Carpenter(InventoryMonitor *inventory_monitor)
-    : Producer(inventory_monitor, carpenter_requirements) {}
+    : Producer(inventory_monitor, carpenter_requirements, carpenter_benefit_points) {}

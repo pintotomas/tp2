@@ -9,5 +9,7 @@ std::map<Resource, int > gunsmith_requirements =	{
 	{ Resource::carbon, 2 }
 };
 
+int gunsmith_benefit_points = 3;
+
 Gunsmith::Gunsmith(InventoryMonitor *inventory_monitor)
-    : Producer(inventory_monitor, gunsmith_requirements) {}
+    : Producer(inventory_monitor, gunsmith_requirements, gunsmith_benefit_points) {}
