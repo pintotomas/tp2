@@ -13,17 +13,23 @@ void InventoryMonitor::add(Resource resource) {
   cv.notify_all();
 }
 
-void InventoryMonitor::inventory_handle_requirements(std::map<Resource, int> requirements) {
+bool InventoryMonitor::inventory_handle_requirements(std::map<Resource, int> requirements) {
   std::unique_lock<std::mutex> lock(mutex);
-  bool a = this->inventory->has_resources(requirements);
-  std::cout << "Result: " << a << std::endl;
-  cv.notify_all();
+  bool success = false;
+  if (this->inventory->has_resources(requirements)) {
+    this->inventory->retrieve_resources(requirements);
+    success = true;
+  }
+  else if(!this->is_active()){
+    //No hay recursos ni habra en el futuro
+    throw NoMoreFutureResourcesException();
+  }
+  return success;
 }
 
 void InventoryMonitor::stop_one_worker(){
 	std::unique_lock<std::mutex> lock(mutex);
 	this->gatherers_working--;
-	std::cout << "Gatherers working: " << this->gatherers_working << std::endl;
 	cv.notify_all();
 }
 

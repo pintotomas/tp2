@@ -6,6 +6,7 @@
 #include <queue>
 #include "Resource.h"
 #include "Inventory.h"
+#include "exceptions.h"
 
 class InventoryMonitor {
  private:
@@ -23,7 +24,7 @@ class InventoryMonitor {
   //Elimino constructor por copia y por movimiento
   InventoryMonitor(const InventoryMonitor &) = delete;
   InventoryMonitor &operator=(const InventoryMonitor &) = delete;
-  void inventory_handle_requirements(std::map<Resource, int> requirements);
+  bool inventory_handle_requirements(std::map<Resource, int> requirements);
 };
 
 #endif //INVENTORY_H

@@ -6,6 +6,7 @@
 #include "InventoryMonitor.h"
 #include <map>
 #include <string>
+#include "exceptions.h"
 
 class Producer : public Thread {
  protected:

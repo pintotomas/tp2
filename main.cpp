@@ -128,17 +128,12 @@ int main(int argc, char *argv[]) {
     BlockingQueueResource queue_trigo;
     BlockingQueueResource queue_madera;
     BlockingQueueResource queue_minerales;
+
+
+
     Inventory inventory;
+
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
-    std::vector<Gatherer *> agricultores = 
-    generate_gatherers(workers.find("Agricultores")->second, &queue_trigo,
-     &inventory_monitor);
-    std::vector<Gatherer *> leniadores =
-     generate_gatherers(workers.find("Leniadores")->second, &queue_madera,
-      &inventory_monitor);
-    std::vector<Gatherer *> mineros =
-     generate_gatherers(workers.find("Mineros")->second, &queue_minerales,
-      &inventory_monitor);
 
     std::vector<Producer *> cocineros =
      generate_producers("Cocineros", workers.find("Cocineros")->second,
@@ -150,6 +145,16 @@ int main(int argc, char *argv[]) {
     generate_producers("Armeros", workers.find("Armeros")->second,
      &inventory_monitor);
 
+    std::vector<Gatherer *> agricultores = 
+    generate_gatherers(workers.find("Agricultores")->second, &queue_trigo,
+     &inventory_monitor);
+    std::vector<Gatherer *> leniadores =
+     generate_gatherers(workers.find("Leniadores")->second, &queue_madera,
+      &inventory_monitor);
+    std::vector<Gatherer *> mineros =
+     generate_gatherers(workers.find("Mineros")->second, &queue_minerales,
+      &inventory_monitor);
+    
 
     parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
     queue_trigo.close();
@@ -163,20 +168,14 @@ int main(int argc, char *argv[]) {
     join_and_destroy_producers(carpinteros);
     join_and_destroy_producers(armeros);
     /*
-    Imprimo recursos totales
+    Imprimo recursos restantes
     */
-    std::cout << "Trigo recolectado: " << inventory.get_trigo() << std::endl;
-    std::cout << "Hierro recolectado: " << inventory.get_hierro() << std::endl;
-    std::cout << "Carbon recolectado: " << inventory.get_carbon() << std::endl;
-    std::cout << "Madera recolectado: " << inventory.get_madera() << std::endl;
-
-    // print content:
-      // std::cout << "elements in mymap:" << '\n';
-      // std::cout << "Agricultores => " << workers.find("Agricultores")->second << '\n';
-      // std::cout << "Leniadores => " << workers.find("Leniadores")->second << '\n';
-      // std::cout << "Cocineros => " << workers.find("Cocineros")->second << '\n';
-      // std::cout << "Carpinteros => " << workers.find("Carpinteros")->second << '\n';
-      // std::cout << "Armeros => " << workers.find("Armeros")->second << '\n';
+    std::cout << "Recursos restantes:" << std::endl;
+    std::cout << "  - Trigo: " << inventory.remaining_quantity(Resource::trigo) << std::endl;
+    std::cout << "  - Madera: " << inventory.remaining_quantity(Resource::madera) << std::endl;
+    std::cout << "  - Carbon: " << inventory.remaining_quantity(Resource::carbon) << std::endl;
+    std::cout << "  - Hierro: " << inventory.remaining_quantity(Resource::hierro) << std::endl;
+    std::cout << "Puntos de Beneficio acumulados: " << 20 << std::endl; 
 
     return SUCCESS;
 }

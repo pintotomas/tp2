@@ -10,25 +10,24 @@
 
 class Inventory {
  private:
-  // std::mutex mutex;
-  // std::condition_variable cv;
   std::map<Resource, int> resources;
-  //int trigo;
-  //int carbon;
-  //int madera;
-  //int hierro;
  protected:
  public:
   Inventory();
   ~Inventory();
+  //Adds one resource to the inventory
   void add(const Resource material);
+  /*Returns true if the inventory has all of the resources specified in
+    the map. Example of the map is {Resource::hierro, 3}. The integer 
+    represents the quantity needed of the Resource */
   bool has_resources(std::map<Resource, int> req);
-  int get_carbon();
-  int get_trigo();
-  int get_madera();
-  int get_hierro();
-  //Resource pop();
-  //void close();
+  int remaining_quantity(Resource resource);
+  /*Retrieves the resources specified in the map req, with the same 
+    format as the map received in has_resources
+    PRE: the inventory has enough resources (has_resources was called previous
+    to this function)
+    POST: the inventory resources will be diminished*/
+  void retrieve_resources(std::map<Resource, int> req);
   //Elimino constructor por copia y por movimiento
   Inventory(const Inventory &) = delete;
   Inventory &operator=(const Inventory &) = delete;
