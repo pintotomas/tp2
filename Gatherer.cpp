@@ -5,10 +5,10 @@
 #include "exceptions.h"
 #define SLEEP_TIME 50
 
-Gatherer::Gatherer(BlockingQueueResource *queue, InventoryMonitor *inventory_monitor) {
+Gatherer::Gatherer(BlockingQueueResource *queue, 
+  InventoryMonitor *inventory_monitor) {
  this->queue = queue; 
  this->inventory_monitor = inventory_monitor; 
-
 }
 
 void Gatherer::run() {
@@ -19,7 +19,7 @@ void Gatherer::run() {
       usleep(SLEEP_TIME);
   		//std::cout << "Recolecte: " << to_string(resource) << '\n';
       this->inventory_monitor->add(resource);
-  	} catch (ClosedQueueException) {
+  	} catch(ClosedQueueException){
       this->inventory_monitor->stop_one_worker();
   		break;
   	}

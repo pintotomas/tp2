@@ -1,0 +1,11 @@
+#include "Producer.h"
+
+#ifndef CARPENTER_H
+#define CARPENTER_H
+
+class Carpenter : public Producer {
+ public:
+  explicit Carpenter(InventoryMonitor *inventory_monitor);
+};
+
+#endif

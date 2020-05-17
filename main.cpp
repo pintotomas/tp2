@@ -7,6 +7,10 @@
 #include "BlockingQueueResource.h"
 #include "Gatherer.h"
 #include "Producer.h"
+#include "Gunsmith.h"
+#include "Chef.h"
+#include "Carpenter.h"
+#include <vector>
 #include "InventoryMonitor.h"
 
 #define SUCCESS 0
@@ -55,7 +59,6 @@ std::map<std::string, int> parse_workers(std::ifstream& stream) {
 std::vector<Gatherer *> generate_gatherers(int quantity,
                                       BlockingQueueResource *queue,
                                       InventoryMonitor *inventory_monitor) {
-
   std::vector<Gatherer *> gatherers(quantity);
   for (int i = 0; i < quantity; i++) {
     gatherers[i] = new Gatherer(queue, inventory_monitor);
@@ -65,36 +68,44 @@ std::vector<Gatherer *> generate_gatherers(int quantity,
 }
 
 
-std::vector<Producer *> generate_producers(int quantity,
-                                      InventoryMonitor *inventory_monitor) {
-
+std::vector<Producer *> generate_producers(std::string description,
+ int quantity, InventoryMonitor *inventory_monitor) {
   std::vector<Producer *> producers(quantity);
   for (int i = 0; i < quantity; i++) {
-    producers[i] = new Producer(inventory_monitor);
+    if (description == "Armeros") {
+      producers[i] = new Gunsmith(inventory_monitor);
+    }
+    if (description == "Carpinteros") {
+      producers[i] = new Carpenter(inventory_monitor); 
+    }
+    if (description == "Cocineros") {
+      producers[i] = new Chef(inventory_monitor);
+    }
     producers[i]->start();
   }
   return producers;
 }
 
 void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
-
-  for(auto gatherer = gatherers.begin(); gatherer != gatherers.end(); gatherer++){
+  for (auto gatherer = gatherers.begin();
+   gatherer != gatherers.end(); gatherer++){
     (*gatherer)->join();
     delete *gatherer;
-
   }
 }
 
 void join_and_destroy_producers(std::vector<Producer *> producers) {
-
-  for(auto producer = producers.begin(); producer != producers.end(); producer++){
+  for (auto producer = producers.begin();
+   producer != producers.end(); producer++){
     (*producer)->join();
     delete *producer;
-
   }
 }
 
-void parse_map(std::ifstream& stream, BlockingQueueResource *queue_trigo, BlockingQueueResource *queue_madera, BlockingQueueResource *queue_minerales) {
+void parse_map(std::ifstream& stream,
+ BlockingQueueResource *queue_trigo,
+  BlockingQueueResource *queue_madera,
+   BlockingQueueResource *queue_minerales) {
   char ch;
   while (stream >> std::noskipws >> ch) {
     if (ch == 'T') queue_trigo->push(Resource::trigo);
@@ -119,13 +130,25 @@ int main(int argc, char *argv[]) {
     BlockingQueueResource queue_minerales;
     Inventory inventory;
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
-    std::vector<Gatherer *> agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo, &inventory_monitor);
-    std::vector<Gatherer *> leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera, &inventory_monitor);
-    std::vector<Gatherer *> mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales, &inventory_monitor);
+    std::vector<Gatherer *> agricultores = 
+    generate_gatherers(workers.find("Agricultores")->second, &queue_trigo,
+     &inventory_monitor);
+    std::vector<Gatherer *> leniadores =
+     generate_gatherers(workers.find("Leniadores")->second, &queue_madera,
+      &inventory_monitor);
+    std::vector<Gatherer *> mineros =
+     generate_gatherers(workers.find("Mineros")->second, &queue_minerales,
+      &inventory_monitor);
 
-    std::vector<Producer *> cocineros = generate_producers(workers.find("Cocineros")->second, &inventory_monitor);
-    std::vector<Producer *> carpinteros = generate_producers(workers.find("Carpinteros")->second, &inventory_monitor);
-    std::vector<Producer *> armeros = generate_producers(workers.find("Armeros")->second, &inventory_monitor);
+    std::vector<Producer *> cocineros =
+     generate_producers("Cocineros", workers.find("Cocineros")->second,
+      &inventory_monitor);
+    std::vector<Producer *> carpinteros =
+     generate_producers("Carpinteros", workers.find("Carpinteros")->second,
+      &inventory_monitor);
+    std::vector<Producer *> armeros = 
+    generate_producers("Armeros", workers.find("Armeros")->second,
+     &inventory_monitor);
 
 
     parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);

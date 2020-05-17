@@ -9,7 +9,6 @@
 enum class Resource { trigo, madera, carbon, hierro };
 
 inline const char* to_string(Resource resource) {
-
   switch (resource) {
     case Resource::trigo:
       return TRIGO;

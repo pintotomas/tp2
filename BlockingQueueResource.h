@@ -24,7 +24,6 @@ class BlockingQueueResource {
   //Elimino constructor por copia y por movimiento
   BlockingQueueResource(const BlockingQueueResource &) = delete;
   BlockingQueueResource &operator=(const BlockingQueueResource &) = delete;
-
 };
 
 #endif //BLOCKING_QUEUE_RESOURCE_H

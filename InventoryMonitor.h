@@ -13,27 +13,16 @@ class InventoryMonitor {
   std::condition_variable cv;
   Inventory *inventory;
   int gatherers_working;
-  // int trigo;
-  // int carbon;
-  // int madera;
-  // int hierro;
- protected:
+
  public:
   InventoryMonitor(Inventory *inventory, int gatherers_working);
   ~InventoryMonitor();
   void add(Resource material);
   void stop_one_worker();
   bool is_active();
-  // int get_carbon();
-  // int get_trigo();
-  // int get_madera();
-  // int get_hierro();
-  //Resource pop();
-  //void close();
   //Elimino constructor por copia y por movimiento
   InventoryMonitor(const InventoryMonitor &) = delete;
   InventoryMonitor &operator=(const InventoryMonitor &) = delete;
-
 };
 
 #endif //INVENTORY_H

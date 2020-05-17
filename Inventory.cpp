@@ -1,5 +1,5 @@
 #include "Inventory.h"
-#include "string.h"
+#include <string>
 
 Inventory::Inventory()
     : trigo(0), carbon(0), madera(0), hierro(0) {}
@@ -7,24 +7,25 @@ Inventory::Inventory()
 Inventory::~Inventory() {}
 
 void Inventory::add(Resource resource) {
-
   std::string resource_description = to_string(resource);
-  if(resource_description == TRIGO) this->trigo++;
-  if(resource_description == MADERA) this->madera++; 
-  if(resource_description == CARBON) this->carbon++; 
-  if(resource_description == HIERRO) this->hierro++; 
-  
+  if (resource_description == TRIGO) this->trigo++;
+  if (resource_description == MADERA) this->madera++; 
+  if (resource_description == CARBON) this->carbon++; 
+  if (resource_description == HIERRO) this->hierro++; 
 }
 
 int Inventory::get_carbon() {
 	return this->carbon;
 }
+
 int Inventory::get_hierro() {
 	return this->hierro;
 }
+
 int Inventory::get_trigo() {
 	return this->trigo;
 }
+
 int Inventory::get_madera() {
 	return this->madera;
 }

@@ -11,7 +11,8 @@ class Gatherer : public Thread {
   InventoryMonitor *inventory_monitor;
 
  public:
-  explicit Gatherer(BlockingQueueResource *queue, InventoryMonitor *inventory_monitor);
+  explicit Gatherer(BlockingQueueResource *queue, 
+  	InventoryMonitor *inventory_monitor);
   void run();
   //Elimino constructor por copia y por movimiento
   Gatherer(const Gatherer &) = delete;

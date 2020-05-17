@@ -2,12 +2,12 @@
 #include "string.h"
 
 InventoryMonitor::InventoryMonitor(Inventory *inventory, int gatherers_working)
-    : mutex(), cv(), inventory(inventory), gatherers_working(gatherers_working) {}
+    : mutex(), cv(), inventory(inventory), gatherers_working(gatherers_working)
+     {}
 
 InventoryMonitor::~InventoryMonitor() {}
 
 void InventoryMonitor::add(Resource resource) {
-
   std::unique_lock<std::mutex> lock(mutex);
   this->inventory->add(resource);
   cv.notify_all();

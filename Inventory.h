@@ -29,7 +29,6 @@ class Inventory {
   //Elimino constructor por copia y por movimiento
   Inventory(const Inventory &) = delete;
   Inventory &operator=(const Inventory &) = delete;
-
 };
 
 #endif //INVENTORY_H
