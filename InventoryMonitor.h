@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "Inventory.h"
 #include "exceptions.h"
+#include <map>
 
 class InventoryMonitor {
  private:

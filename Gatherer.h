@@ -19,5 +19,4 @@ class Gatherer : public Thread {
   Gatherer &operator=(const Gatherer &) = delete;
 };
 
-
 #endif //GATHERER_H

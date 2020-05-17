@@ -1,5 +1,6 @@
 #include "InventoryMonitor.h"
 #include "string.h"
+#include <map>
 
 InventoryMonitor::InventoryMonitor(Inventory *inventory, int gatherers_working)
     : mutex(), cv(), inventory(inventory), gatherers_working(gatherers_working)
@@ -13,14 +14,14 @@ void InventoryMonitor::add(Resource resource) {
   cv.notify_all();
 }
 
-bool InventoryMonitor::inventory_handle_requirements(std::map<Resource, int> requirements) {
+bool InventoryMonitor::inventory_handle_requirements
+(std::map<Resource, int> requirements) {
   std::unique_lock<std::mutex> lock(mutex);
   bool success = false;
   if (this->inventory->has_resources(requirements)) {
     this->inventory->retrieve_resources(requirements);
     success = true;
-  }
-  else if(!this->is_active()){
+  } else if (!this->is_active()) {
     //No hay recursos ni habra en el futuro
     throw NoMoreFutureResourcesException();
   }

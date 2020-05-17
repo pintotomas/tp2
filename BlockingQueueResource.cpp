@@ -19,7 +19,6 @@ Resource BlockingQueueResource::pop() {
 
   while (queue.empty()) {
     if (isClosed) {
-      //return nullptr;
       throw ClosedQueueException();
     }
     cv.wait(lock);
@@ -27,11 +26,6 @@ Resource BlockingQueueResource::pop() {
 
   Resource resource = queue.front();
   queue.pop();
-  //Resource *resource2;
-  //resource2 = new Resource;
-  //*resource2 = resource;
-  //Resource *resourcePtr = &resource;
-  //return &resource;
   return resource;
 }
 

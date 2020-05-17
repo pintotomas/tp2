@@ -5,7 +5,8 @@
 
 class Carpenter : public Producer {
  public:
-  explicit Carpenter(InventoryMonitor *inventory_monitor, PointStorer *point_storer);
+  explicit Carpenter(InventoryMonitor *inventory_monitor,
+   PointStorer *point_storer);
 };
 
 #endif

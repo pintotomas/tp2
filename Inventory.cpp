@@ -7,7 +7,6 @@ std::map<Resource, int > resources_stock =  {
   { Resource::carbon, 0 },
   { Resource::madera, 0 },
   { Resource::trigo, 0 }
-
 };
 
 Inventory::Inventory()
@@ -44,11 +43,9 @@ bool Inventory::has_resources(std::map<Resource, int> req) {
     int required_ammount = it->second;
     int current_ammount = this->resources.find(resource)->second;
     if (required_ammount > current_ammount) {
-      //std::cout << "Cant satisfy, ammount needed for " << to_string(resource) << "is " << required_ammount << "but there only is" << current_ammount << std::endl;
       return false;
     }
     it++;
   }
-  //std::cout << "CAN SATISFY!!!!" << std::endl;
   return true;
 }

@@ -169,12 +169,17 @@ int main(int argc, char *argv[]) {
     /*
     Imprimo recursos restantes
     */
+    int remaining_trigo = inventory.remaining_quantity(Resource::trigo);
+    int remaining_madera = inventory.remaining_quantity(Resource::madera);
+    int remaining_carbon = inventory.remaining_quantity(Resource::carbon);
+    int remaining_hierro = inventory.remaining_quantity(Resource::hierro);
+    int points = point_storer.get_points();
     std::cout << "Recursos restantes:" << std::endl;
-    std::cout << "  - Trigo: " << inventory.remaining_quantity(Resource::trigo) << std::endl;
-    std::cout << "  - Madera: " << inventory.remaining_quantity(Resource::madera) << std::endl;
-    std::cout << "  - Carbon: " << inventory.remaining_quantity(Resource::carbon) << std::endl;
-    std::cout << "  - Hierro: " << inventory.remaining_quantity(Resource::hierro) << std::endl;
-    std::cout << "Puntos de Beneficio acumulados: " << point_storer.get_points() << std::endl; 
+    std::cout << "  - Trigo: " << remaining_trigo << std::endl;
+    std::cout << "  - Madera: " << remaining_madera << std::endl;
+    std::cout << "  - Carbon: " <<  remaining_carbon << std::endl;
+    std::cout << "  - Hierro: " << remaining_hierro << std::endl;
+    std::cout << "Puntos de Beneficio acumulados: " << points << std::endl; 
 
     return SUCCESS;
 }
