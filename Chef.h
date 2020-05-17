@@ -6,7 +6,7 @@
 
 class Chef : public Producer {
  public:
-  explicit Chef(InventoryMonitor *inventory_monitor);
+  explicit Chef(InventoryMonitor *inventory_monitor, PointStorer *point_storer);
 };
 
 #endif

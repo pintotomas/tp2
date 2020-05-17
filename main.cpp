@@ -69,17 +69,17 @@ std::vector<Gatherer *> generate_gatherers(int quantity,
 
 
 std::vector<Producer *> generate_producers(std::string description,
- int quantity, InventoryMonitor *inventory_monitor) {
+ int quantity, InventoryMonitor *inventory_monitor, PointStorer *point_storer) {
   std::vector<Producer *> producers(quantity);
   for (int i = 0; i < quantity; i++) {
     if (description == "Armeros") {
-      producers[i] = new Gunsmith(inventory_monitor);
+      producers[i] = new Gunsmith(inventory_monitor, point_storer);
     }
     if (description == "Carpinteros") {
-      producers[i] = new Carpenter(inventory_monitor); 
+      producers[i] = new Carpenter(inventory_monitor, point_storer); 
     }
     if (description == "Cocineros") {
-      producers[i] = new Chef(inventory_monitor);
+      producers[i] = new Chef(inventory_monitor, point_storer);
     }
     producers[i]->start();
   }
@@ -129,21 +129,20 @@ int main(int argc, char *argv[]) {
     BlockingQueueResource queue_madera;
     BlockingQueueResource queue_minerales;
 
-
-
     Inventory inventory;
+    PointStorer point_storer;
 
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
 
     std::vector<Producer *> cocineros =
      generate_producers("Cocineros", workers.find("Cocineros")->second,
-      &inventory_monitor);
+      &inventory_monitor, &point_storer);
     std::vector<Producer *> carpinteros =
      generate_producers("Carpinteros", workers.find("Carpinteros")->second,
-      &inventory_monitor);
+      &inventory_monitor, &point_storer);
     std::vector<Producer *> armeros = 
     generate_producers("Armeros", workers.find("Armeros")->second,
-     &inventory_monitor);
+     &inventory_monitor, &point_storer);
 
     std::vector<Gatherer *> agricultores = 
     generate_gatherers(workers.find("Agricultores")->second, &queue_trigo,
@@ -175,7 +174,7 @@ int main(int argc, char *argv[]) {
     std::cout << "  - Madera: " << inventory.remaining_quantity(Resource::madera) << std::endl;
     std::cout << "  - Carbon: " << inventory.remaining_quantity(Resource::carbon) << std::endl;
     std::cout << "  - Hierro: " << inventory.remaining_quantity(Resource::hierro) << std::endl;
-    std::cout << "Puntos de Beneficio acumulados: " << 20 << std::endl; 
+    std::cout << "Puntos de Beneficio acumulados: " << point_storer.get_points() << std::endl; 
 
     return SUCCESS;
 }
