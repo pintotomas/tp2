@@ -1,5 +1,5 @@
 #include "Producer.h"
-
+#include "Resource.h"
 #ifndef CARPENTER_H
 #define CARPENTER_H
 

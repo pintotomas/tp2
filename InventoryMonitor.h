@@ -23,6 +23,7 @@ class InventoryMonitor {
   //Elimino constructor por copia y por movimiento
   InventoryMonitor(const InventoryMonitor &) = delete;
   InventoryMonitor &operator=(const InventoryMonitor &) = delete;
+  void inventory_handle_requirements(std::map<Resource, int> requirements);
 };
 
 #endif //INVENTORY_H

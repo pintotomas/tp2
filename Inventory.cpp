@@ -1,57 +1,56 @@
 #include "Inventory.h"
 #include <string>
+#include <map>
+
+std::map<Resource, int > resources_stock =  {
+  { Resource::hierro, 0 },
+  { Resource::carbon, 0 },
+  { Resource::madera, 0 },
+  { Resource::trigo, 0 }
+
+};
 
 Inventory::Inventory()
-    : trigo(0), carbon(0), madera(0), hierro(0) {}
+    : resources(resources_stock) {}
 
 Inventory::~Inventory() {}
 
 void Inventory::add(const Resource resource) {
-  std::string resource_description = to_string(resource);
-  if (resource_description == TRIGO) this->trigo++;
-  if (resource_description == MADERA) this->madera++; 
-  if (resource_description == CARBON) this->carbon++; 
-  if (resource_description == HIERRO) this->hierro++; 
+  this->resources[resource]++;
 }
 
 int Inventory::get_carbon() {
-	return this->carbon;
+  return this->resources.find(Resource::carbon)->second;
 }
 
 int Inventory::get_hierro() {
-	return this->hierro;
+  return this->resources.find(Resource::hierro)->second;
 }
 
 int Inventory::get_trigo() {
-	return this->trigo;
+  return this->resources.find(Resource::trigo)->second;
 }
 
 int Inventory::get_madera() {
-	return this->madera;
+  return this->resources.find(Resource::madera)->second;
 }
-// Resource BlockingQueueResource::pop() {
-//   std::unique_lock<std::mutex> lock(mutex);
-
-//   while (queue.empty()) {
-//     if (isClosed) {
-//       //return nullptr;
-//       throw ClosedQueueException();
-//     }
-//     cv.wait(lock);
-//   }
-
-//   Resource resource = queue.front();
-//   queue.pop();
-//   //Resource *resource2;
-//   //resource2 = new Resource;
-//   //*resource2 = resource;
-//   //Resource *resourcePtr = &resource;
-//   //return &resource;
-//   return resource;
-// }
-
-// void BlockingQueueResource::close() {
-//   std::unique_lock<std::mutex> lock(mutex);
-//   isClosed = true;
-//   cv.notify_all();
-// }
+//Esta funcion en vez de bool deebria devolver un int y 
+// debo contemplar los 3 casos (ver notas)
+//
+bool Inventory::has_resources(std::map<Resource, int> req) {
+  std::map<Resource, int>::iterator it = req.begin();
+  // Iterate over the map using Iterator till end.
+  while (it != req.end())
+  {
+    Resource resource = it->first;
+    int required_ammount = it->second;
+    int current_ammount = this->resources.find(resource)->second;
+    if (required_ammount > current_ammount) {
+      std::cout << "Cant satisfy, ammount needed for " << to_string(resource) << "is " << required_ammount << "but there only is" << current_ammount << std::endl;
+      return false;
+    }
+    it++;
+  }
+  std::cout << "CAN SATISFY!!!!" << std::endl;
+  return true;
+}

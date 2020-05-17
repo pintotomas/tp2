@@ -10,11 +10,11 @@
 class Producer : public Thread {
  protected:
   InventoryMonitor *inventory_monitor;
-  std::map<std::string, int> requirements;
+  std::map<Resource, int> requirements;
 
  public:
   explicit Producer(InventoryMonitor *inventory_monitor,
-   std::map<std::string, int> requirements);
+   std::map<Resource, int> requirements);
   void run();
   //Elimino constructor por copia y por movimiento
   Producer(const Producer &) = delete;

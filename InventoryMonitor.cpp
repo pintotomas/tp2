@@ -13,6 +13,13 @@ void InventoryMonitor::add(Resource resource) {
   cv.notify_all();
 }
 
+void InventoryMonitor::inventory_handle_requirements(std::map<Resource, int> requirements) {
+  std::unique_lock<std::mutex> lock(mutex);
+  bool a = this->inventory->has_resources(requirements);
+  std::cout << "Result: " << a << std::endl;
+  cv.notify_all();
+}
+
 void InventoryMonitor::stop_one_worker(){
 	std::unique_lock<std::mutex> lock(mutex);
 	this->gatherers_working--;

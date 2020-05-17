@@ -4,9 +4,9 @@
 #include <string>
 //para debug, borrar
 
-std::map<std::string, int > chef_requirements =	{
-		{ "trigo", 2 },
-		{ "carbon", 1 }
+std::map<Resource, int > chef_requirements =	{
+		{ Resource::trigo, 2 },
+		{ Resource::carbon, 1 }
 	};
 
 Chef::Chef(InventoryMonitor *inventory_monitor)

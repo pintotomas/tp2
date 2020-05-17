@@ -3,9 +3,9 @@
 #include <map>
 #include <string>
 
-std::map<std::string, int > carpenter_requirements =	{
-	{ "hierro", 1 },
-	{ "madera", 3 }
+std::map<Resource, int > carpenter_requirements =	{
+	{ Resource::hierro, 1 },
+	{ Resource::madera, 3 }
 };
 
 Carpenter::Carpenter(InventoryMonitor *inventory_monitor)
