@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
     std::cout << "  - Madera: " << remaining_madera << std::endl;
     std::cout << "  - Carbon: " <<  remaining_carbon << std::endl;
     std::cout << "  - Hierro: " << remaining_hierro << std::endl;
-    std::cout << "Puntos de Beneficio acumulados: " << points << std::endl; 
+    std::cout << std::endl << "Puntos de Beneficio acumulados: " << points << std::endl; 
 
     return SUCCESS;
 }
