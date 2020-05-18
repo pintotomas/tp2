@@ -24,6 +24,10 @@ bool InventoryMonitor::inventory_handle_requirements
   } else if (!this->is_active()) {
     //No hay recursos ni habra en el futuro
     throw NoMoreFutureResourcesException();
+  } else {
+    //No hay recursos, pero puede llegar a haber en el futuro
+    //Hago que el productor espere antes de seguir solicitando recursos
+    cv.wait(lock);
   }
   return success;
 }

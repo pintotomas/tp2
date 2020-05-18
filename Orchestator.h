@@ -30,12 +30,13 @@ class Orchestator {
   std::vector<Gatherer *> leniadores;
   std::vector<Gatherer *> mineros;
   void close_queues_finish_threads();
-  std::vector<Producer *> create_start_producers(std::string description,
-  int quantity, InventoryMonitor *inventory_monitor);
+  std::vector<Producer *> create_start_producers(const std::string description,
+  const int quantity, InventoryMonitor *inventory_monitor);
   std::vector<Gatherer *> create_start_gatherers(int quantity,
                                       BlockingQueueResource *queue,
                                       InventoryMonitor *inventory_monitor);
-  void generate_gatherers();
+  void generate_gatherers(const std::map<std::string, int> *workers,
+    InventoryMonitor *inventory_monitor);
   void generate_producers(const std::map<std::string, int> *workers,
     InventoryMonitor *inventory_monitor);
 
