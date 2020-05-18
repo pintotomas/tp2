@@ -30,7 +30,7 @@ class Orchestator {
   std::vector<Gatherer *> agricultores;
   std::vector<Gatherer *> leniadores;
   std::vector<Gatherer *> mineros;
- protected:
+
  public:
   Orchestator(std::ifstream& workers_file, std::ifstream& map_file);
   ~Orchestator();

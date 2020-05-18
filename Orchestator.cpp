@@ -1,4 +1,7 @@
 #include "Orchestator.h"
+#include <map>
+#include <string>
+#include <vector>
 
 /* Recibe el archivo de trabajadores, y devuelve un mapa
    <Tipo trabajador, cantidad>
@@ -110,15 +113,21 @@ void Orchestator::run() {
 
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
 
-    cocineros = create_producers("Cocineros", workers.find("Cocineros")->second, &inventory_monitor);
-    carpinteros = create_producers("Carpinteros", workers.find("Carpinteros")->second, &inventory_monitor);
-    armeros =  create_producers("Armeros", workers.find("Armeros")->second, &inventory_monitor);
+    cocineros = create_producers
+    ("Cocineros", workers.find("Cocineros")->second, &inventory_monitor);
+    carpinteros = create_producers
+    ("Carpinteros", workers.find("Carpinteros")->second, &inventory_monitor);
+    armeros =  create_producers
+    ("Armeros", workers.find("Armeros")->second, &inventory_monitor);
 
-    agricultores = generate_gatherers(workers.find("Agricultores")->second, &queue_trigo,
+    agricultores = generate_gatherers(workers.find("Agricultores")->second,
+     &queue_trigo,
      &inventory_monitor);
-    leniadores = generate_gatherers(workers.find("Leniadores")->second, &queue_madera,
+    leniadores = generate_gatherers
+    (workers.find("Leniadores")->second, &queue_madera,
       &inventory_monitor);
-    mineros = generate_gatherers(workers.find("Mineros")->second, &queue_minerales,
+    mineros = generate_gatherers
+    (workers.find("Mineros")->second, &queue_minerales,
       &inventory_monitor);
     
 
