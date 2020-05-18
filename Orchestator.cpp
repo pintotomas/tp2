@@ -22,7 +22,7 @@ std::map<std::string, int> parse_workers(std::ifstream& stream) {
     return workers;
 }
 
-std::vector<Gatherer *> generate_gatherers(int quantity,
+std::vector<Gatherer *> Orchestator::create_start_gatherers(int quantity,
                                       BlockingQueueResource *queue,
                                       InventoryMonitor *inventory_monitor) {
   std::vector<Gatherer *> gatherers(quantity);
@@ -34,7 +34,7 @@ std::vector<Gatherer *> generate_gatherers(int quantity,
 }
 
 
-std::vector<Producer *> Orchestator::create_producers(std::string description,
+std::vector<Producer *> Orchestator::create_start_producers(std::string description,
  int quantity, InventoryMonitor *inventory_monitor) {
   std::vector<Producer *> producers(quantity);
   for (int i = 0; i < quantity; i++) {
@@ -80,8 +80,6 @@ void parse_map(std::ifstream& stream,
     else if (ch == 'H') queue_minerales->push(Resource::hierro);
   }
 }
-
-
 Orchestator::Orchestator(std::ifstream& workers_file, std::ifstream& map_file) :
 workers_file(workers_file), map_file(map_file) {}
 
@@ -105,33 +103,7 @@ void Orchestator::print_results() {
      << points << std::endl; 
 }
 
-void Orchestator::run() {
-    std::map<std::string, int> workers = parse_workers(workers_file);
-    int gatherers_quantity = workers.find("Agricultores")->second +
-                             workers.find("Leniadores")->second +
-                             workers.find("Mineros")->second;
-
-    InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
-
-    cocineros = create_producers
-    ("Cocineros", workers.find("Cocineros")->second, &inventory_monitor);
-    carpinteros = create_producers
-    ("Carpinteros", workers.find("Carpinteros")->second, &inventory_monitor);
-    armeros =  create_producers
-    ("Armeros", workers.find("Armeros")->second, &inventory_monitor);
-
-    agricultores = generate_gatherers(workers.find("Agricultores")->second,
-     &queue_trigo,
-     &inventory_monitor);
-    leniadores = generate_gatherers
-    (workers.find("Leniadores")->second, &queue_madera,
-      &inventory_monitor);
-    mineros = generate_gatherers
-    (workers.find("Mineros")->second, &queue_minerales,
-      &inventory_monitor);
-    
-
-    parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
+void Orchestator::close_queues_finish_threads() {
     queue_trigo.close();
     queue_madera.close();
     queue_minerales.close();
@@ -142,5 +114,40 @@ void Orchestator::run() {
     join_and_destroy_producers(cocineros);
     join_and_destroy_producers(carpinteros);
     join_and_destroy_producers(armeros);
-    print_results();
+}
+
+void Orchestator::generate_producers(const std::map<std::string, int> *workers, 
+  InventoryMonitor *inventory_monitor) {
+    cocineros = create_start_producers
+    ("Cocineros", workers->find("Cocineros")->second, inventory_monitor);
+    carpinteros = create_start_producers
+    ("Carpinteros", workers->find("Carpinteros")->second, inventory_monitor);
+    armeros =  create_start_producers
+    ("Armeros", workers->find("Armeros")->second, inventory_monitor);
+}
+
+void Orchestator::run() {
+    std::map<std::string, int> workers = parse_workers(workers_file);
+    int gatherers_quantity = workers.find("Agricultores")->second +
+                             workers.find("Leniadores")->second +
+                             workers.find("Mineros")->second;
+
+    InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
+    generate_producers(&workers, &inventory_monitor);
+    // cocineros = create_start_producers
+    // ("Cocineros", workers.find("Cocineros")->second, &inventory_monitor);
+    // carpinteros = create_start_producers
+    // ("Carpinteros", workers.find("Carpinteros")->second, &inventory_monitor);
+    // armeros =  create_start_producers
+    // ("Armeros", workers.find("Armeros")->second, &inventory_monitor);
+
+    agricultores = create_start_gatherers
+    (workers.find("Agricultores")->second, &queue_trigo, &inventory_monitor);
+    leniadores = create_start_gatherers
+    (workers.find("Leniadores")->second, &queue_madera, &inventory_monitor);
+    mineros = create_start_gatherers
+    (workers.find("Mineros")->second, &queue_minerales, &inventory_monitor);
+
+    parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
+    close_queues_finish_threads();
 }

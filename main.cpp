@@ -34,5 +34,6 @@ int main(int argc, char *argv[]) {
     if (!valid_stream(map_file)) return ERROR;
     Orchestator orchestator(workers_file, map_file);
     orchestator.run();
+    orchestator.print_results();
     return SUCCESS;
 }
