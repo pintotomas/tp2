@@ -1,5 +1,4 @@
 #include "InventoryMonitor.h"
-#include "string.h"
 #include <map>
 
 InventoryMonitor::InventoryMonitor(Inventory *inventory, int gatherers_working)
@@ -8,7 +7,7 @@ InventoryMonitor::InventoryMonitor(Inventory *inventory, int gatherers_working)
 
 InventoryMonitor::~InventoryMonitor() {}
 
-void InventoryMonitor::add(Resource resource) {
+void InventoryMonitor::add(const Resource resource) {
   std::unique_lock<std::mutex> lock(mutex);
   this->inventory->add(resource);
   cv.notify_all();
@@ -17,19 +16,16 @@ void InventoryMonitor::add(Resource resource) {
 bool InventoryMonitor::inventory_handle_requirements
 (std::map<Resource, int> requirements) {
   std::unique_lock<std::mutex> lock(mutex);
-  bool success = false;
-  if (this->inventory->has_resources(requirements)) {
-    this->inventory->retrieve_resources(requirements);
-    success = true;
-  } else if (!this->is_active()) {
-    //No hay recursos ni habra en el futuro
-    throw NoMoreFutureResourcesException();
-  } else {
-    //No hay recursos, pero puede llegar a haber en el futuro
-    //Hago que el productor espere antes de seguir solicitando recursos
+  while (true) {
+    if (this->inventory->has_resources(requirements)) {
+      this->inventory->retrieve_resources(requirements);
+      return true;
+    } else if (!this->is_active()) {
+      throw NoMoreFutureResourcesException();
+    }
+    //Wait until there are more resources or a gatherer stops working
     cv.wait(lock);
   }
-  return success;
 }
 
 void InventoryMonitor::stop_one_worker(){

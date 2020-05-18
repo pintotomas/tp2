@@ -6,8 +6,8 @@
 #include "InventoryMonitor.h"
 #include "PointStorer.h"
 #include <map>
-#include <string>
 #include "exceptions.h"
+#include <unistd.h>
 
 class Producer : public Thread {
  private:

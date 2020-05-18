@@ -20,11 +20,17 @@ class InventoryMonitor {
  public:
   InventoryMonitor(Inventory *inventory, int gatherers_working);
   ~InventoryMonitor();
-  void add(Resource material);
+  void add(const Resource material);
   void stop_one_worker();
-  //Elimino constructor por copia y por movimiento
   InventoryMonitor(const InventoryMonitor &) = delete;
   InventoryMonitor &operator=(const InventoryMonitor &) = delete;
+  /*
+    Tries to retrieve the quantity of resource specified in the map
+    requirements. If not possible, makes the producer wait until 
+    there are new resources and checks again if the requirements are satisfied.
+    Throws NoMoreFutureResourcesException when there wont be any more resources
+    in the inventory.
+  */
   bool inventory_handle_requirements(std::map<Resource, int> requirements);
 };
 
