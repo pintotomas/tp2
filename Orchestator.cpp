@@ -1,23 +1,5 @@
 #include "Orchestator.h"
 
-// bool valid_arguments(int argc) {
-//     if (argc != ARG_COUNT) {
-//         std::cerr << "Se deben especificar los archivos de mapa"
-//         "y trabajadores. Ejemplo:" 
-//         "./tp trabajadores.txt mapa.txt\n";
-//         return false;
-//     }
-//     return true;
-// }
-
-// bool valid_stream(std::ifstream& stream) {
-//     if (!stream) {
-//       std::cerr << "Error al abrir archivo!\n";
-//       return false;
-//     }
-//     return true;
-// }
-
 /* Recibe el archivo de trabajadores, y devuelve un mapa
    <Tipo trabajador, cantidad>
 */

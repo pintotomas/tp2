@@ -18,6 +18,8 @@ class Orchestator {
  private:
   std::ifstream& workers_file;
   std::ifstream& map_file;
+//  Inventory &inventory;
+//  Inventory &inventory;
 
  protected:
  public:
