@@ -3,14 +3,11 @@
 #include <string>
 #include <vector>
 
-/* Recibe el archivo de trabajadores, y devuelve un mapa
-   <Tipo trabajador, cantidad>
-*/
-std::map<std::string, int> parse_workers(std::ifstream& stream) {
+std::map<std::string, int> Orchestator::parse_workers() {
     std::map<std::string, int> workers;
     std::string s; 
     std::string delimiter = "=";
-    while (std::getline(stream, s)) {
+    while (std::getline(workers_file, s)) {
         size_t pos = 0;
         std::string token;
         while ((pos = s.find(delimiter)) != std::string::npos) {
@@ -53,7 +50,7 @@ std::vector<Producer *> Orchestator::create_start_producers
   return producers;
 }
 
-void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
+static void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
   for (auto gatherer = gatherers.begin();
    gatherer != gatherers.end(); gatherer++){
     (*gatherer)->join();
@@ -61,7 +58,7 @@ void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
   }
 }
 
-void join_and_destroy_producers(std::vector<Producer *> producers) {
+static void join_and_destroy_producers(std::vector<Producer *> producers) {
   for (auto producer = producers.begin();
    producer != producers.end(); producer++){
     (*producer)->join();
@@ -69,16 +66,13 @@ void join_and_destroy_producers(std::vector<Producer *> producers) {
   }
 }
 
-void parse_map(std::ifstream& stream,
- BlockingQueueResource *queue_trigo,
-  BlockingQueueResource *queue_madera,
-   BlockingQueueResource *queue_minerales) {
+void Orchestator::parse_map() {
   char ch;
-  while (stream >> std::noskipws >> ch) {
-    if (ch == 'T') queue_trigo->push(Resource::trigo);
-    else if (ch == 'M') queue_madera->push(Resource::madera);
-    else if (ch == 'C') queue_minerales->push(Resource::carbon);
-    else if (ch == 'H') queue_minerales->push(Resource::hierro);
+  while (map_file >> std::noskipws >> ch) {
+    if (ch == 'T') queue_trigo.push(Resource::trigo);
+    else if (ch == 'M') queue_madera.push(Resource::madera);
+    else if (ch == 'C') queue_minerales.push(Resource::carbon);
+    else if (ch == 'H') queue_minerales.push(Resource::hierro);
   }
 }
 Orchestator::Orchestator(std::ifstream& workers_file, std::ifstream& map_file) :
@@ -87,9 +81,6 @@ workers_file(workers_file), map_file(map_file) {}
 Orchestator::~Orchestator() {}
 
 void Orchestator::print_results() {
-    /*
-    Imprimo recursos restantes
-    */
     int remaining_trigo = inventory.remaining_quantity(Resource::trigo);
     int remaining_madera = inventory.remaining_quantity(Resource::madera);
     int remaining_carbon = inventory.remaining_quantity(Resource::carbon);
@@ -111,7 +102,6 @@ void Orchestator::close_queues_finish_threads() {
     join_and_destroy_gatherers(agricultores);
     join_and_destroy_gatherers(leniadores);
     join_and_destroy_gatherers(mineros);
-
     join_and_destroy_producers(cocineros);
     join_and_destroy_producers(carpinteros);
     join_and_destroy_producers(armeros);
@@ -138,13 +128,13 @@ void Orchestator::generate_gatherers(const std::map<std::string, int> *workers,
   }
 
 void Orchestator::run() {
-    std::map<std::string, int> workers = parse_workers(workers_file);
+    std::map<std::string, int> workers = parse_workers();
     int gatherers_quantity = workers.find("Agricultores")->second +
                              workers.find("Leniadores")->second +
                              workers.find("Mineros")->second;
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
     generate_producers(&workers, &inventory_monitor);
     generate_gatherers(&workers, &inventory_monitor);
-    parse_map(map_file, &queue_trigo, &queue_madera, &queue_minerales);
+    parse_map();
     close_queues_finish_threads();
 }

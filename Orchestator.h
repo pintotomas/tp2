@@ -30,6 +30,8 @@ class Orchestator {
   std::vector<Gatherer *> leniadores;
   std::vector<Gatherer *> mineros;
   void close_queues_finish_threads();
+  std::map<std::string, int> parse_workers();
+  void parse_map();
   std::vector<Producer *> create_start_producers(const std::string description,
   const int quantity, InventoryMonitor *inventory_monitor);
   std::vector<Gatherer *> create_start_gatherers(int quantity,
@@ -39,13 +41,14 @@ class Orchestator {
     InventoryMonitor *inventory_monitor);
   void generate_producers(const std::map<std::string, int> *workers,
     InventoryMonitor *inventory_monitor);
+  void Orchestator::join_and_destroy_producers(std::vector<Producer *> producers);
+  void Orchestator::join_and_destroy_gatherers(std::vector<Gatherer *> gatherers);
 
  public:
   Orchestator(std::ifstream& workers_file, std::ifstream& map_file);
   ~Orchestator();
   void run();
   void print_results();
-  //Elimino constructor por por movimiento
   Orchestator(const Orchestator &) = delete;
   Orchestator &operator=(const Orchestator &) = delete;
 };
