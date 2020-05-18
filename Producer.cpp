@@ -11,7 +11,7 @@ Producer::Producer(InventoryMonitor *inventory_monitor,
   PointStorer* point_storer)
     : inventory_monitor(inventory_monitor), requirements(requirements),
     benefit_points(benefit_points), point_storer(point_storer) {}
-
+Producer::~Producer() {}
 void Producer::run() {
   while (true) {
     try {
@@ -25,4 +25,3 @@ void Producer::run() {
       }      
     }
   }
-

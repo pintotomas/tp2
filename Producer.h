@@ -20,6 +20,7 @@ class Producer : public Thread {
   explicit Producer(InventoryMonitor *inventory_monitor,
    std::map<Resource, int> requirements, int benefit_points,
    PointStorer *point_storer);
+  ~Producer();
   void run();
   //Elimino constructor por copia y por movimiento
   Producer(const Producer &) = delete;
