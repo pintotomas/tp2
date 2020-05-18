@@ -12,13 +12,13 @@
 class Producer : public Thread {
  private:
   InventoryMonitor *inventory_monitor;
-  std::map<Resource, int> requirements;
-  int benefit_points;
+  const std::map<Resource, int> requirements;
+  const int benefit_points;
   PointStorer* point_storer;
 
  public:
   explicit Producer(InventoryMonitor *inventory_monitor,
-   std::map<Resource, int> requirements, int benefit_points,
+   const std::map<Resource, int> requirements, const int benefit_points,
    PointStorer *point_storer);
   ~Producer();
   void run();

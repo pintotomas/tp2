@@ -13,8 +13,8 @@ class Gatherer : public Thread {
  public:
   explicit Gatherer(BlockingQueueResource *queue, 
   	InventoryMonitor *inventory_monitor);
+  //Recollects resources from the queue until it's closed.
   void run();
-  //Elimino constructor por copia y por movimiento
   Gatherer(const Gatherer &) = delete;
   Gatherer &operator=(const Gatherer &) = delete;
 };

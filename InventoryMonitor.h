@@ -18,7 +18,7 @@ class InventoryMonitor {
   bool is_active();
 
  public:
-  InventoryMonitor(Inventory *inventory, int gatherers_working);
+  InventoryMonitor(Inventory *inventory, const int gatherers_working);
   ~InventoryMonitor();
   void add(const Resource material);
   void stop_one_worker();

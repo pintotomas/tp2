@@ -1,7 +1,8 @@
 #include "InventoryMonitor.h"
 #include <map>
 
-InventoryMonitor::InventoryMonitor(Inventory *inventory, int gatherers_working)
+InventoryMonitor::InventoryMonitor
+    (Inventory *inventory, const int gatherers_working)
     : mutex(), cv(), inventory(inventory), gatherers_working(gatherers_working)
      {}
 
@@ -23,7 +24,7 @@ bool InventoryMonitor::inventory_handle_requirements
     } else if (!this->is_active()) {
       throw NoMoreFutureResourcesException();
     }
-    //Wait until there are more resources or a gatherer stops working
+    //Wait until there are more resources or a there aint any more gatherers
     cv.wait(lock);
   }
 }
@@ -31,7 +32,7 @@ bool InventoryMonitor::inventory_handle_requirements
 void InventoryMonitor::stop_one_worker(){
 	std::unique_lock<std::mutex> lock(mutex);
 	this->gatherers_working--;
-	cv.notify_all();
+  if (this->gatherers_working == 0) cv.notify_all();
 }
 
 bool InventoryMonitor::is_active(){

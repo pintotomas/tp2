@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 
-std::map<Resource, int > resources_stock =  {
+const std::map<Resource, int > resources_stock =  {
   { Resource::hierro, 0 },
   { Resource::carbon, 0 },
   { Resource::madera, 0 },
@@ -18,7 +18,7 @@ void Inventory::add(const Resource resource) {
   this->resources[resource]++;
 }
 
-int Inventory::remaining_quantity(Resource resource) {
+int Inventory::remaining_quantity(const Resource resource) {
   return this->resources.find(resource)->second;
 }
 
@@ -27,8 +27,8 @@ void Inventory::retrieve_resources(std::map<Resource, int> req) {
   // Iterate over the map using Iterator till end.
   while (it != req.end())
   {
-    Resource resource = it->first;
-    int required_ammount = it->second;
+    const Resource resource = it->first;
+    const int required_ammount = it->second;
     this->resources[resource] -= required_ammount;
     it++;
   }
@@ -39,9 +39,9 @@ bool Inventory::has_resources(std::map<Resource, int> req) {
   // Iterate over the map using Iterator till end.
   while (it != req.end())
   {
-    Resource resource = it->first;
-    int required_ammount = it->second;
-    int current_ammount = this->resources.find(resource)->second;
+    const Resource resource = it->first;
+    const int required_ammount = it->second;
+    const int current_ammount = this->resources.find(resource)->second;
     if (required_ammount > current_ammount) {
       return false;
     }

@@ -3,12 +3,12 @@
 #include <map>
 #include <string>
 
-std::map<Resource, int > carpenter_requirements =	{
+const std::map<Resource, int > carpenter_requirements =	{
 	{ Resource::hierro, 1 },
 	{ Resource::madera, 3 }
 };
 
-int carpenter_benefit_points = 2;
+const int carpenter_benefit_points = 2;
 
 Carpenter::Carpenter(InventoryMonitor *inventory_monitor,
  PointStorer *point_storer)

@@ -14,8 +14,8 @@ class PointStorer {
  public:
   PointStorer();
   ~PointStorer();
-  void add_points(int points);
-  int get_points();
+  void add_points(const int points);
+  const int get_points();
   //Elimino constructor por copia y por movimiento
   PointStorer(const PointStorer &) = delete;
   PointStorer &operator=(const PointStorer &) = delete;

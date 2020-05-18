@@ -5,13 +5,13 @@ PointStorer::PointStorer()
 
 PointStorer::~PointStorer() {}
 
-void PointStorer::add_points(int points) {
+void PointStorer::add_points(const int points) {
   std::unique_lock<std::mutex> lock(mutex);
   this->points_accumulated += points;
   cv.notify_all();
 } 
 
-int PointStorer::get_points() {
+const int PointStorer::get_points() {
   std::unique_lock<std::mutex> lock(mutex);
   cv.notify_all();
   return this->points_accumulated;

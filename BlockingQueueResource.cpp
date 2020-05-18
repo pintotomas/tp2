@@ -8,13 +8,13 @@ BlockingQueueResource::BlockingQueueResource()
 
 BlockingQueueResource::~BlockingQueueResource() {}
 
-void BlockingQueueResource::push(Resource resource) {
+void BlockingQueueResource::push(const Resource resource) {
   std::unique_lock<std::mutex> lock(mutex);
   queue.push(resource);
   cv.notify_all();
 }
 
-Resource BlockingQueueResource::pop() {
+const Resource BlockingQueueResource::pop() {
   std::unique_lock<std::mutex> lock(mutex);
 
   while (queue.empty()) {

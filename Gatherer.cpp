@@ -15,7 +15,7 @@ void Gatherer::run() {
   bool gathering = true;
   while (gathering) {
   	try {
-  		Resource resource = this->queue->pop();
+  		const Resource resource = this->queue->pop();
       usleep(SLEEP_TIME);
       this->inventory_monitor->add(resource);
   	} catch(ClosedQueueException){

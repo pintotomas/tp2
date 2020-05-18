@@ -4,12 +4,12 @@
 #include <string>
 //para debug, borrar
 
-std::map<Resource, int > chef_requirements =	{
+const std::map<Resource, int > chef_requirements =	{
 		{ Resource::trigo, 2 },
 		{ Resource::carbon, 1 }
 	};
 
-int chef_benefit_points = 5;
+const int chef_benefit_points = 5;
 
 Chef::Chef(InventoryMonitor *inventory_monitor, PointStorer *point_storer)
     : Producer(inventory_monitor, chef_requirements,

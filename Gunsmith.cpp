@@ -4,12 +4,12 @@
 #include <string>
 //para debug, borrar
 
-std::map<Resource, int > gunsmith_requirements =	{
+const std::map<Resource, int > gunsmith_requirements =	{
 	{ Resource::hierro, 2 },
 	{ Resource::carbon, 2 }
 };
 
-int gunsmith_benefit_points = 3;
+const int gunsmith_benefit_points = 3;
 
 Gunsmith::Gunsmith(InventoryMonitor *inventory_monitor,
  PointStorer *point_storer)
