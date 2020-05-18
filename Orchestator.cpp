@@ -50,7 +50,8 @@ std::vector<Producer *> Orchestator::create_start_producers
   return producers;
 }
 
-static void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
+void Orchestator::join_and_destroy_gatherers
+(std::vector<Gatherer *> gatherers) {
   for (auto gatherer = gatherers.begin();
    gatherer != gatherers.end(); gatherer++){
     (*gatherer)->join();
@@ -58,7 +59,8 @@ static void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers) {
   }
 }
 
-static void join_and_destroy_producers(std::vector<Producer *> producers) {
+void Orchestator::join_and_destroy_producers
+(std::vector<Producer *> producers) {
   for (auto producer = producers.begin();
    producer != producers.end(); producer++){
     (*producer)->join();
@@ -107,7 +109,7 @@ void Orchestator::close_queues_finish_threads() {
     join_and_destroy_producers(armeros);
 }
 
-void Orchestator::generate_producers(const std::map<std::string, int> *workers, 
+void Orchestator::spawn_producers(const std::map<std::string, int> *workers, 
   InventoryMonitor *inventory_monitor) {
     cocineros = create_start_producers
     ("Cocineros", workers->find("Cocineros")->second, inventory_monitor);
@@ -117,7 +119,7 @@ void Orchestator::generate_producers(const std::map<std::string, int> *workers,
     ("Armeros", workers->find("Armeros")->second, inventory_monitor);
 }
 
-void Orchestator::generate_gatherers(const std::map<std::string, int> *workers,
+void Orchestator::spawn_gatherers(const std::map<std::string, int> *workers,
     InventoryMonitor *inventory_monitor) { 
     agricultores = create_start_gatherers
     (workers->find("Agricultores")->second, &queue_trigo, inventory_monitor);
@@ -133,8 +135,8 @@ void Orchestator::run() {
                              workers.find("Leniadores")->second +
                              workers.find("Mineros")->second;
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
-    generate_producers(&workers, &inventory_monitor);
-    generate_gatherers(&workers, &inventory_monitor);
+    spawn_producers(&workers, &inventory_monitor);
+    spawn_gatherers(&workers, &inventory_monitor);
     parse_map();
     close_queues_finish_threads();
 }

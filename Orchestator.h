@@ -37,12 +37,12 @@ class Orchestator {
   std::vector<Gatherer *> create_start_gatherers(int quantity,
                                       BlockingQueueResource *queue,
                                       InventoryMonitor *inventory_monitor);
-  void generate_gatherers(const std::map<std::string, int> *workers,
+  void spawn_gatherers(const std::map<std::string, int> *workers,
     InventoryMonitor *inventory_monitor);
-  void generate_producers(const std::map<std::string, int> *workers,
+  void spawn_producers(const std::map<std::string, int> *workers,
     InventoryMonitor *inventory_monitor);
-  void Orchestator::join_and_destroy_producers(std::vector<Producer *> producers);
-  void Orchestator::join_and_destroy_gatherers(std::vector<Gatherer *> gatherers);
+  void join_and_destroy_producers(std::vector<Producer *> producers);
+  void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers);
 
  public:
   Orchestator(std::ifstream& workers_file, std::ifstream& map_file);
