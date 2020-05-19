@@ -39,3 +39,5 @@ En este diagrama muestro como un productor intenta obtener recursos a traves del
 Nota: Omiti la llamada a lock(mutex) al acceder al monitor para hacer al diagrama mas legible
 
 ## Aclaraciones
+
+- Intente guardar tanto a los productores como a los recolectores en tan solo dos vectores, pero no logre que compilara mi solucion y decidi dejarlos en vectores separados a cada tipo de productor y recolector
