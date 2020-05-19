@@ -11,9 +11,9 @@ Producer::~Producer() {}
 void Producer::run() {
   while (true) {
     try {
-      if (this->inventory_monitor->inventory_handle_requirements
-         (this->requirements)) {
-        this->point_storer->add_points(this->benefit_points);
+      if (inventory_monitor->inventory_handle_requirements
+         (requirements)) {
+        point_storer->add_points(benefit_points);
         usleep(SLEEP_TIME);
       }
       } catch(NoMoreFutureResourcesException){

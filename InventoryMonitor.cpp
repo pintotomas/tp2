@@ -10,7 +10,7 @@ InventoryMonitor::~InventoryMonitor() {}
 
 void InventoryMonitor::add(const Resource resource) {
   std::unique_lock<std::mutex> lock(mutex);
-  this->inventory->add(resource);
+  inventory->add(resource);
   cv.notify_all();
 }
 
@@ -18,10 +18,10 @@ bool InventoryMonitor::inventory_handle_requirements
 (std::map<Resource, int> requirements) {
   std::unique_lock<std::mutex> lock(mutex);
   while (true) {
-    if (this->inventory->has_resources(requirements)) {
-      this->inventory->retrieve_resources(requirements);
+    if (inventory->has_resources(requirements)) {
+      inventory->retrieve_resources(requirements);
       return true;
-    } else if (!this->is_active()) {
+    } else if (!is_active()) {
       throw NoMoreFutureResourcesException();
     }
     //Wait until there are more resources or a there aint any more gatherers
@@ -31,10 +31,10 @@ bool InventoryMonitor::inventory_handle_requirements
 
 void InventoryMonitor::stop_one_worker(){
 	std::unique_lock<std::mutex> lock(mutex);
-	this->gatherers_working--;
-  if (this->gatherers_working == 0) cv.notify_all();
+	gatherers_working--;
+  if (gatherers_working == 0) cv.notify_all();
 }
 
 bool InventoryMonitor::is_active(){
-  return (this->gatherers_working > 0);
+  return (gatherers_working > 0);
 }

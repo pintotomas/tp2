@@ -15,11 +15,11 @@ Inventory::Inventory()
 Inventory::~Inventory() {}
 
 void Inventory::add(const Resource resource) {
-  this->resources[resource]++;
+  resources[resource]++;
 }
 
 int Inventory::remaining_quantity(const Resource resource) {
-  return this->resources.find(resource)->second;
+  return resources.find(resource)->second;
 }
 
 void Inventory::retrieve_resources(std::map<Resource, int> req) {
@@ -29,7 +29,7 @@ void Inventory::retrieve_resources(std::map<Resource, int> req) {
   {
     const Resource resource = it->first;
     const int required_ammount = it->second;
-    this->resources[resource] -= required_ammount;
+    resources[resource] -= required_ammount;
     it++;
   }
 }
@@ -41,7 +41,7 @@ bool Inventory::has_resources(std::map<Resource, int> req) {
   {
     const Resource resource = it->first;
     const int required_ammount = it->second;
-    const int current_ammount = this->resources.find(resource)->second;
+    const int current_ammount = resources.find(resource)->second;
     if (required_ammount > current_ammount) {
       return false;
     }
