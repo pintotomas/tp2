@@ -28,6 +28,11 @@ En ambos casos a) y b) se vuelve al paso 2).
 Una vez que el productor obtuvo los recursos que necesitaba (Obtiene un True de parte del InventoryMonitor) accede a un acumulador de puntos compartido por todos los trabajadores, que, nuevamente, debe ser protegido para evitar fallas mediante el uso de locks. Se atomiza la operacion de incrementar el contador de puntos, y, finalmente, cuando tanto recolectores y productores dejan de trabajar, el Orchestator muestra los recursos que no se utilizaron y cuantos puntos se obtuvieron por los recursos trabajados.
  
 ## Diagramas
+
+![Diagrama de clases](diagramas/diagrama_de_clases.jpeg)
+
+En este diagrama muestro como un recolector toma recursos de la cola y los envia al inventario a traves de un monitor. Al no haber recursos en la cola y obviando que no esta cerrada, espera hasta que el Orchestator haga un push de un recurso a la cola para obtenerlo y asi devolverlo al recolector para finalizar su tarea.
+
 ![Diagrama de flujo recoleccion](diagramas/flujo_recolector.png)
 
 En este diagrama muestro como un recolector toma recursos de la cola y los envia al inventario a traves de un monitor. Al no haber recursos en la cola y obviando que no esta cerrada, espera hasta que el Orchestator haga un push de un recurso a la cola para obtenerlo y asi devolverlo al recolector para finalizar su tarea.

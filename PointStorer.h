@@ -8,7 +8,6 @@ class PointStorer {
  private:
   int points_accumulated;
   std::mutex mutex;
-  std::condition_variable cv;
 
  protected:
  public:
