@@ -1,5 +1,7 @@
 Padron: 98757
+
 Nombre: Pinto Tomas Eduardo
+
 Repositorio: https://github.com/pintotomas/tp2
 
 ## Descripcion
