@@ -31,7 +31,7 @@ Una vez que el productor obtuvo los recursos que necesitaba (Obtiene un True de 
 
 ![Diagrama de clases](diagramas/diagrama_de_clases.jpeg)
 
-En este diagrama muestro como un recolector toma recursos de la cola y los envia al inventario a traves de un monitor. Al no haber recursos en la cola y obviando que no esta cerrada, espera hasta que el Orchestator haga un push de un recurso a la cola para obtenerlo y asi devolverlo al recolector para finalizar su tarea.
+En este diagrama de clases omiti la clase Orchestator para que sea mas claro el diagrama y ademas no enriquece mucho lo que quiero mostrar.
 
 ![Diagrama de flujo recoleccion](diagramas/flujo_recolector.png)
 
