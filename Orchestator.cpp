@@ -101,31 +101,31 @@ void Orchestator::close_queues_finish_threads() {
     queue_trigo.close();
     queue_madera.close();
     queue_minerales.close();
-    join_and_destroy_gatherers(agricultores);
-    join_and_destroy_gatherers(leniadores);
-    join_and_destroy_gatherers(mineros);
-    join_and_destroy_producers(cocineros);
-    join_and_destroy_producers(carpinteros);
-    join_and_destroy_producers(armeros);
+    join_and_destroy_gatherers(farmers);
+    join_and_destroy_gatherers(lumberjacks);
+    join_and_destroy_gatherers(miners);
+    join_and_destroy_producers(chefs);
+    join_and_destroy_producers(carpenters);
+    join_and_destroy_producers(gunsmiths);
 }
 
 void Orchestator::spawn_producers(const std::map<std::string, int> *workers, 
   InventoryMonitor *inventory_monitor) {
-    cocineros = create_start_producers
+    chefs = create_start_producers
     ("Cocineros", workers->find("Cocineros")->second, inventory_monitor);
-    carpinteros = create_start_producers
+    carpenters = create_start_producers
     ("Carpinteros", workers->find("Carpinteros")->second, inventory_monitor);
-    armeros =  create_start_producers
+    gunsmiths =  create_start_producers
     ("Armeros", workers->find("Armeros")->second, inventory_monitor);
 }
 
 void Orchestator::spawn_gatherers(const std::map<std::string, int> *workers,
     InventoryMonitor *inventory_monitor) { 
-    agricultores = create_start_gatherers
+    farmers = create_start_gatherers
     (workers->find("Agricultores")->second, &queue_trigo, inventory_monitor);
-    leniadores = create_start_gatherers
+    lumberjacks = create_start_gatherers
     (workers->find("Leniadores")->second, &queue_madera, inventory_monitor);
-    mineros = create_start_gatherers
+    miners = create_start_gatherers
     (workers->find("Mineros")->second, &queue_minerales, inventory_monitor);
   }
 

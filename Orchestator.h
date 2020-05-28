@@ -23,12 +23,12 @@ class Orchestator {
   BlockingQueueResource queue_trigo;
   BlockingQueueResource queue_madera;
   BlockingQueueResource queue_minerales;
-  std::vector<Producer *> cocineros;
-  std::vector<Producer *> carpinteros;
-  std::vector<Producer *> armeros;
-  std::vector<Gatherer *> agricultores;
-  std::vector<Gatherer *> leniadores;
-  std::vector<Gatherer *> mineros;
+  std::vector<Producer *> chefs;
+  std::vector<Producer *> carpenters;
+  std::vector<Producer *> gunsmiths;
+  std::vector<Gatherer *> farmers;
+  std::vector<Gatherer *> lumberjacks;
+  std::vector<Gatherer *> miners;
   void close_queues_finish_threads();
   std::map<std::string, int> parse_workers();
   void parse_map();
