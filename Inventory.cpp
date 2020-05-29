@@ -19,7 +19,7 @@ void Inventory::add(const Resource &resource) {
 }
 
 int Inventory::remaining_quantity(const Resource &resource) {
-  return resources.find(resource)->second;
+  return std::move(resources.find(resource)->second);
 }
 
 void Inventory::retrieve_resources(std::map<Resource, int> &req) {
