@@ -50,17 +50,17 @@ std::vector<Producer *> Orchestator::create_start_producers
   return std::move(producers);
 }
 
-void Orchestator::close_queues_finish_threads() {
-    queue_trigo.close();
-    queue_madera.close();
-    queue_minerales.close();
-    join_and_destroy_gatherers(farmers);
-    join_and_destroy_gatherers(lumberjacks);
-    join_and_destroy_gatherers(miners);
-    join_and_destroy_producers(chefs);
-    join_and_destroy_producers(carpenters);
-    join_and_destroy_producers(gunsmiths);
-}
+// void Orchestator::close_queues_finish_threads() {
+//     queue_trigo.close();
+//     queue_madera.close();
+//     queue_minerales.close();
+//     join_and_destroy_gatherers(farmers);
+//     join_and_destroy_gatherers(lumberjacks);
+//     join_and_destroy_gatherers(miners);
+//     join_and_destroy_producers(chefs);
+//     join_and_destroy_producers(carpenters);
+//     join_and_destroy_producers(gunsmiths);
+// }
 
 void Orchestator::join_and_destroy_gatherers
                     (std::vector<Gatherer *> &gatherers) {
@@ -94,7 +94,19 @@ workers_file(workers_file), map_file(map_file) {
   workers = parse_workers();
 }
 
-Orchestator::~Orchestator() {}
+Orchestator::~Orchestator() {
+  std::cout << "En el destructor" << std::endl;
+  queue_trigo.close();
+  queue_madera.close();
+  queue_minerales.close();
+  join_and_destroy_gatherers(farmers);
+  join_and_destroy_gatherers(lumberjacks);
+  join_and_destroy_gatherers(miners);
+  join_and_destroy_producers(chefs);
+  join_and_destroy_producers(carpenters);
+  join_and_destroy_producers(gunsmiths);
+  print_results();
+}
 
 void Orchestator::print_results() {
   int remaining_trigo = inventory.remaining_quantity(Resource::trigo);
@@ -137,5 +149,5 @@ void Orchestator::run() {
     spawn_producers(inventory_monitor);
     spawn_gatherers(inventory_monitor);
     parse_map();
-    close_queues_finish_threads();
+    //close_queues_finish_threads();
 }

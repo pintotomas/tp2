@@ -26,7 +26,7 @@ bool valid_stream(std::ifstream& stream) {
     return true;
 }
 
-int main(int argc, char *argv[]) {
+bool run_program(int argc, char *argv[]) {
     if (!valid_arguments(argc)) return ERROR;
     std::ifstream workers_file(argv[1]);
     std::ifstream map_file(argv[2]);
@@ -34,6 +34,10 @@ int main(int argc, char *argv[]) {
     if (!valid_stream(map_file)) return ERROR;
     Orchestator orchestator(workers_file, map_file);
     orchestator.run();
-    orchestator.print_results();
+    //orchestator.print_results();
     return SUCCESS;
+}
+
+int main(int argc, char *argv[]) {
+    return run_program(argc, argv);
 }

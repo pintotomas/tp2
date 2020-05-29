@@ -30,7 +30,7 @@ class Orchestator {
   std::vector<Gatherer *> farmers;
   std::vector<Gatherer *> lumberjacks;
   std::vector<Gatherer *> miners;
-  void close_queues_finish_threads();
+  //void close_queues_finish_threads();
   std::map<std::string, int> parse_workers();
   void parse_map();
   std::vector<Producer *> create_start_producers(const std::string description,
