@@ -27,7 +27,7 @@ std::vector<Gatherer *> Orchestator::create_start_gatherers(int quantity,
     gatherers[i] = new Gatherer(queue, inventory_monitor);
     gatherers[i]->start();
   }
-  return gatherers;
+  return std::move(gatherers);
 }
 
 
@@ -47,7 +47,7 @@ std::vector<Producer *> Orchestator::create_start_producers
     }
     producers[i]->start();
   }
-  return producers;
+  return std::move(producers);
 }
 
 void Orchestator::close_queues_finish_threads() {
