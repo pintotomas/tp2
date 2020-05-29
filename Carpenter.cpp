@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 
-const std::map<Resource, int > carpenter_requirements =	{
+std::map<Resource, int > carpenter_requirements =	{
 	{ Resource::hierro, 1 },
 	{ Resource::madera, 3 }
 };

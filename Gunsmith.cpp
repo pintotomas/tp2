@@ -2,9 +2,7 @@
 #include <unistd.h>
 #include <map>
 #include <string>
-//para debug, borrar
-
-const std::map<Resource, int > gunsmith_requirements =	{
+std::map<Resource, int > gunsmith_requirements =	{
 	{ Resource::hierro, 2 },
 	{ Resource::carbon, 2 }
 };

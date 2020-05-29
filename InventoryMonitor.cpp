@@ -2,24 +2,24 @@
 #include <map>
 
 InventoryMonitor::InventoryMonitor
-    (Inventory *inventory, const int gatherers_working)
+              (Inventory &inventory, const int &gatherers_working)
     : mutex(), cv(), inventory(inventory), gatherers_working(gatherers_working)
      {}
 
 InventoryMonitor::~InventoryMonitor() {}
 
-void InventoryMonitor::add(const Resource resource) {
+void InventoryMonitor::add(const Resource &resource) {
   std::unique_lock<std::mutex> lock(mutex);
-  inventory->add(resource);
+  inventory.add(resource);
   cv.notify_all();
 }
 
 bool InventoryMonitor::inventory_handle_requirements
-(std::map<Resource, int> requirements) {
+          (std::map<Resource, int> &requirements) {
   std::unique_lock<std::mutex> lock(mutex);
   while (true) {
-    if (inventory->has_resources(requirements)) {
-      inventory->retrieve_resources(requirements);
+    if (inventory.has_resources(requirements)) {
+      inventory.retrieve_resources(requirements);
       return true;
     } else if (!is_active()) {
       throw NoMoreFutureResourcesException();

@@ -133,7 +133,7 @@ void Orchestator::run() {
     int gatherers_quantity = workers.find("Agricultores")->second +
                              workers.find("Leniadores")->second +
                              workers.find("Mineros")->second;
-    InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
+    InventoryMonitor inventory_monitor(inventory, gatherers_quantity);
     spawn_producers(inventory_monitor);
     spawn_gatherers(inventory_monitor);
     parse_map();

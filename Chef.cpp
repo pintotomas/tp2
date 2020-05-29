@@ -4,7 +4,7 @@
 #include <string>
 //para debug, borrar
 
-const std::map<Resource, int > chef_requirements =	{
+std::map<Resource, int > chef_requirements =	{
 		{ Resource::trigo, 2 },
 		{ Resource::carbon, 1 }
 	};

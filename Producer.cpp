@@ -3,7 +3,7 @@
 #define SLEEP_TIME 60
 
 Producer::Producer(InventoryMonitor &inventory_monitor,
- std::map<Resource, int> requirements, int benefit_points,
+ std::map<Resource, int> &requirements, const int &benefit_points,
   PointStorer &point_storer)
     : inventory_monitor(inventory_monitor), requirements(requirements),
     benefit_points(benefit_points), point_storer(point_storer) {}
