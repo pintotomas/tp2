@@ -40,8 +40,8 @@ class Orchestator {
                                       InventoryMonitor &inventory_monitor);
   void spawn_gatherers(InventoryMonitor &inventory_monitor);
   void spawn_producers(InventoryMonitor &inventory_monitor);
-  void join_and_destroy_producers(std::vector<Producer *> producers);
-  void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers);
+  void join_and_destroy_producers(std::vector<Producer *> &producers);
+  void join_and_destroy_gatherers(std::vector<Gatherer *> &gatherers);
 
  public:
   Orchestator(std::ifstream& workers_file, std::ifstream& map_file);

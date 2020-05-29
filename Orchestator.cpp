@@ -50,8 +50,20 @@ std::vector<Producer *> Orchestator::create_start_producers
   return producers;
 }
 
+void Orchestator::close_queues_finish_threads() {
+    queue_trigo.close();
+    queue_madera.close();
+    queue_minerales.close();
+    join_and_destroy_gatherers(farmers);
+    join_and_destroy_gatherers(lumberjacks);
+    join_and_destroy_gatherers(miners);
+    join_and_destroy_producers(chefs);
+    join_and_destroy_producers(carpenters);
+    join_and_destroy_producers(gunsmiths);
+}
+
 void Orchestator::join_and_destroy_gatherers
-(std::vector<Gatherer *> gatherers) {
+                    (std::vector<Gatherer *> &gatherers) {
   for (auto gatherer = gatherers.begin();
    gatherer != gatherers.end(); gatherer++){
     (*gatherer)->join();
@@ -60,7 +72,7 @@ void Orchestator::join_and_destroy_gatherers
 }
 
 void Orchestator::join_and_destroy_producers
-(std::vector<Producer *> producers) {
+                    (std::vector<Producer *> &producers) {
   for (auto producer = producers.begin();
    producer != producers.end(); producer++){
     (*producer)->join();
@@ -98,18 +110,6 @@ void Orchestator::print_results() {
   std::cout << "  - Hierro: " << remaining_hierro << std::endl;
   std::cout << std::endl << "Puntos de Beneficio acumulados: "
   << points << std::endl; 
-}
-
-void Orchestator::close_queues_finish_threads() {
-    queue_trigo.close();
-    queue_madera.close();
-    queue_minerales.close();
-    join_and_destroy_gatherers(farmers);
-    join_and_destroy_gatherers(lumberjacks);
-    join_and_destroy_gatherers(miners);
-    join_and_destroy_producers(chefs);
-    join_and_destroy_producers(carpenters);
-    join_and_destroy_producers(gunsmiths);
 }
 
 void Orchestator::spawn_producers(InventoryMonitor &inventory_monitor) {
