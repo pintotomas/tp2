@@ -7,12 +7,12 @@
 
 class Gatherer : public Thread {
  private:
-  BlockingQueueResource *queue;
-  InventoryMonitor *inventory_monitor;
+  BlockingQueueResource &queue;
+  InventoryMonitor &inventory_monitor;
 
  public:
-  explicit Gatherer(BlockingQueueResource *queue, 
-  	InventoryMonitor *inventory_monitor);
+  explicit Gatherer(BlockingQueueResource &queue, 
+  	InventoryMonitor &inventory_monitor);
   //Recollects resources from the queue until it's closed.
   void run();
   Gatherer(const Gatherer &) = delete;

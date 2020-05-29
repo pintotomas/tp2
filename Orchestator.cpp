@@ -20,8 +20,8 @@ std::map<std::string, int> Orchestator::parse_workers() {
 }
 
 std::vector<Gatherer *> Orchestator::create_start_gatherers(int quantity,
-                                      BlockingQueueResource *queue,
-                                      InventoryMonitor *inventory_monitor) {
+                                      BlockingQueueResource &queue,
+                                      InventoryMonitor &inventory_monitor) {
   std::vector<Gatherer *> gatherers(quantity);
   for (int i = 0; i < quantity; i++) {
     gatherers[i] = new Gatherer(queue, inventory_monitor);
@@ -33,17 +33,17 @@ std::vector<Gatherer *> Orchestator::create_start_gatherers(int quantity,
 
 std::vector<Producer *> Orchestator::create_start_producers
 (const std::string description, const int quantity, 
-  InventoryMonitor *inventory_monitor) {
+  InventoryMonitor &inventory_monitor) {
   std::vector<Producer *> producers(quantity);
   for (int i = 0; i < quantity; i++) {
     if (description == "Armeros") {
-      producers[i] = new Gunsmith(inventory_monitor, &point_storer);
+      producers[i] = new Gunsmith(inventory_monitor, point_storer);
     }
     if (description == "Carpinteros") {
-      producers[i] = new Carpenter(inventory_monitor, &point_storer); 
+      producers[i] = new Carpenter(inventory_monitor, point_storer); 
     }
     if (description == "Cocineros") {
-      producers[i] = new Chef(inventory_monitor, &point_storer);
+      producers[i] = new Chef(inventory_monitor, point_storer);
     }
     producers[i]->start();
   }
@@ -109,24 +109,24 @@ void Orchestator::close_queues_finish_threads() {
     join_and_destroy_producers(gunsmiths);
 }
 
-void Orchestator::spawn_producers(const std::map<std::string, int> *workers, 
-  InventoryMonitor *inventory_monitor) {
+void Orchestator::spawn_producers(const std::map<std::string, int> &workers, 
+  InventoryMonitor &inventory_monitor) {
     chefs = create_start_producers
-    ("Cocineros", workers->find("Cocineros")->second, inventory_monitor);
+    ("Cocineros", workers.find("Cocineros")->second, inventory_monitor);
     carpenters = create_start_producers
-    ("Carpinteros", workers->find("Carpinteros")->second, inventory_monitor);
+    ("Carpinteros", workers.find("Carpinteros")->second, inventory_monitor);
     gunsmiths =  create_start_producers
-    ("Armeros", workers->find("Armeros")->second, inventory_monitor);
+    ("Armeros", workers.find("Armeros")->second, inventory_monitor);
 }
 
-void Orchestator::spawn_gatherers(const std::map<std::string, int> *workers,
-    InventoryMonitor *inventory_monitor) { 
+void Orchestator::spawn_gatherers(const std::map<std::string, int> &workers,
+    InventoryMonitor &inventory_monitor) { 
     farmers = create_start_gatherers
-    (workers->find("Agricultores")->second, &queue_trigo, inventory_monitor);
+    (workers.find("Agricultores")->second, queue_trigo, inventory_monitor);
     lumberjacks = create_start_gatherers
-    (workers->find("Leniadores")->second, &queue_madera, inventory_monitor);
+    (workers.find("Leniadores")->second, queue_madera, inventory_monitor);
     miners = create_start_gatherers
-    (workers->find("Mineros")->second, &queue_minerales, inventory_monitor);
+    (workers.find("Mineros")->second, queue_minerales, inventory_monitor);
   }
 
 void Orchestator::run() {
@@ -135,8 +135,8 @@ void Orchestator::run() {
                              workers.find("Leniadores")->second +
                              workers.find("Mineros")->second;
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
-    spawn_producers(&workers, &inventory_monitor);
-    spawn_gatherers(&workers, &inventory_monitor);
+    spawn_producers(workers, inventory_monitor);
+    spawn_gatherers(workers, inventory_monitor);
     parse_map();
     close_queues_finish_threads();
 }

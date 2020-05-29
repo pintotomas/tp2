@@ -11,6 +11,6 @@ const std::map<Resource, int > chef_requirements =	{
 
 const int chef_benefit_points = 5;
 
-Chef::Chef(InventoryMonitor *inventory_monitor, PointStorer *point_storer)
+Chef::Chef(InventoryMonitor &inventory_monitor, PointStorer &point_storer)
     : Producer(inventory_monitor, chef_requirements,
      chef_benefit_points, point_storer){}
