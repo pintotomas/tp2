@@ -14,15 +14,15 @@ Inventory::Inventory()
 
 Inventory::~Inventory() {}
 
-void Inventory::add(const Resource resource) {
+void Inventory::add(const Resource &resource) {
   resources[resource]++;
 }
 
-int Inventory::remaining_quantity(const Resource resource) {
+int Inventory::remaining_quantity(const Resource &resource) {
   return resources.find(resource)->second;
 }
 
-void Inventory::retrieve_resources(std::map<Resource, int> req) {
+void Inventory::retrieve_resources(std::map<Resource, int> &req) {
   std::map<Resource, int>::iterator it = req.begin();
   // Iterate over the map using Iterator till end.
   while (it != req.end())
@@ -34,9 +34,8 @@ void Inventory::retrieve_resources(std::map<Resource, int> req) {
   }
 }
 
-bool Inventory::has_resources(std::map<Resource, int> req) {
+bool Inventory::has_resources(std::map<Resource, int> &req) {
   std::map<Resource, int>::iterator it = req.begin();
-  // Iterate over the map using Iterator till end.
   while (it != req.end())
   {
     const Resource resource = it->first;

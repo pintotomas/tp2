@@ -130,7 +130,6 @@ void Orchestator::spawn_gatherers(InventoryMonitor &inventory_monitor) {
   }
 
 void Orchestator::run() {
-    //std::map<std::string, int> workers = parse_workers();
     int gatherers_quantity = workers.find("Agricultores")->second +
                              workers.find("Leniadores")->second +
                              workers.find("Mineros")->second;
