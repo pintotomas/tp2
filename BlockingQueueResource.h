@@ -18,7 +18,7 @@ class BlockingQueueResource {
  public:
   BlockingQueueResource();
   ~BlockingQueueResource();
-  void push(const Resource material);
+  void push(const Resource &material);
   const Resource pop();
   void close();
   BlockingQueueResource(const BlockingQueueResource &) = delete;
