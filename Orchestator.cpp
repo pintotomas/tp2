@@ -16,16 +16,15 @@ std::map<std::string, int> Orchestator::parse_workers() {
         }
         workers[token] = std::stoi(s);
     }
-    return workers;
+    return std::move(workers);
 }
-
 std::vector<Gatherer *> Orchestator::create_start_gatherers(int quantity,
                                       BlockingQueueResource &queue,
                                       InventoryMonitor &inventory_monitor) {
-  std::vector<Gatherer *> gatherers(quantity);
+  std::vector<Gatherer *> gatherers;
   for (int i = 0; i < quantity; i++) {
-    gatherers[i] = new Gatherer(queue, inventory_monitor);
-    gatherers[i]->start();
+    gatherers.emplace_back(new Gatherer(queue, inventory_monitor));
+    gatherers[gatherers.size() - 1]->start();
   }
   return std::move(gatherers);
 }
@@ -34,18 +33,18 @@ std::vector<Gatherer *> Orchestator::create_start_gatherers(int quantity,
 std::vector<Producer *> Orchestator::create_start_producers
 (const std::string description, const int quantity, 
   InventoryMonitor &inventory_monitor) {
-  std::vector<Producer *> producers(quantity);
+  std::vector<Producer *> producers;
   for (int i = 0; i < quantity; i++) {
     if (description == "Armeros") {
-      producers[i] = new Gunsmith(inventory_monitor, point_storer);
+      producers.emplace_back(new Gunsmith(inventory_monitor, point_storer));
     }
     if (description == "Carpinteros") {
-      producers[i] = new Carpenter(inventory_monitor, point_storer); 
+      producers.emplace_back(new Carpenter(inventory_monitor, point_storer)); 
     }
     if (description == "Cocineros") {
-      producers[i] = new Chef(inventory_monitor, point_storer);
+      producers.emplace_back(new Chef(inventory_monitor, point_storer));
     }
-    producers[i]->start();
+    producers[producers.size() - 1]->start();
   }
   return std::move(producers);
 }
