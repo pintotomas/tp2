@@ -78,23 +78,26 @@ void Orchestator::parse_map() {
   }
 }
 Orchestator::Orchestator(std::ifstream& workers_file, std::ifstream& map_file) :
-workers_file(workers_file), map_file(map_file) {}
+workers_file(workers_file), map_file(map_file) {
+  workers = parse_workers();
+
+}
 
 Orchestator::~Orchestator() {}
 
 void Orchestator::print_results() {
-    int remaining_trigo = inventory.remaining_quantity(Resource::trigo);
-    int remaining_madera = inventory.remaining_quantity(Resource::madera);
-    int remaining_carbon = inventory.remaining_quantity(Resource::carbon);
-    int remaining_hierro = inventory.remaining_quantity(Resource::hierro);
-    int points = point_storer.get_points();
-    std::cout << "Recursos restantes:" << std::endl;
-    std::cout << "  - Trigo: " << remaining_trigo << std::endl;
-    std::cout << "  - Madera: " << remaining_madera << std::endl;
-    std::cout << "  - Carbon: " <<  remaining_carbon << std::endl;
-    std::cout << "  - Hierro: " << remaining_hierro << std::endl;
-    std::cout << std::endl << "Puntos de Beneficio acumulados: "
-     << points << std::endl; 
+  int remaining_trigo = inventory.remaining_quantity(Resource::trigo);
+  int remaining_madera = inventory.remaining_quantity(Resource::madera);
+  int remaining_carbon = inventory.remaining_quantity(Resource::carbon);
+  int remaining_hierro = inventory.remaining_quantity(Resource::hierro);
+  int points = point_storer.get_points();
+  std::cout << "Recursos restantes:" << std::endl;
+  std::cout << "  - Trigo: " << remaining_trigo << std::endl;
+  std::cout << "  - Madera: " << remaining_madera << std::endl;
+  std::cout << "  - Carbon: " <<  remaining_carbon << std::endl;
+  std::cout << "  - Hierro: " << remaining_hierro << std::endl;
+  std::cout << std::endl << "Puntos de Beneficio acumulados: "
+  << points << std::endl; 
 }
 
 void Orchestator::close_queues_finish_threads() {
@@ -109,8 +112,7 @@ void Orchestator::close_queues_finish_threads() {
     join_and_destroy_producers(gunsmiths);
 }
 
-void Orchestator::spawn_producers(const std::map<std::string, int> &workers, 
-  InventoryMonitor &inventory_monitor) {
+void Orchestator::spawn_producers(InventoryMonitor &inventory_monitor) {
     chefs = create_start_producers
     ("Cocineros", workers.find("Cocineros")->second, inventory_monitor);
     carpenters = create_start_producers
@@ -119,8 +121,7 @@ void Orchestator::spawn_producers(const std::map<std::string, int> &workers,
     ("Armeros", workers.find("Armeros")->second, inventory_monitor);
 }
 
-void Orchestator::spawn_gatherers(const std::map<std::string, int> &workers,
-    InventoryMonitor &inventory_monitor) { 
+void Orchestator::spawn_gatherers(InventoryMonitor &inventory_monitor) { 
     farmers = create_start_gatherers
     (workers.find("Agricultores")->second, queue_trigo, inventory_monitor);
     lumberjacks = create_start_gatherers
@@ -130,13 +131,13 @@ void Orchestator::spawn_gatherers(const std::map<std::string, int> &workers,
   }
 
 void Orchestator::run() {
-    std::map<std::string, int> workers = parse_workers();
+    //std::map<std::string, int> workers = parse_workers();
     int gatherers_quantity = workers.find("Agricultores")->second +
                              workers.find("Leniadores")->second +
                              workers.find("Mineros")->second;
     InventoryMonitor inventory_monitor(&inventory, gatherers_quantity);
-    spawn_producers(workers, inventory_monitor);
-    spawn_gatherers(workers, inventory_monitor);
+    spawn_producers(inventory_monitor);
+    spawn_gatherers(inventory_monitor);
     parse_map();
     close_queues_finish_threads();
 }

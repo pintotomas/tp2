@@ -23,6 +23,7 @@ class Orchestator {
   BlockingQueueResource queue_trigo;
   BlockingQueueResource queue_madera;
   BlockingQueueResource queue_minerales;
+  std::map<std::string, int> workers;
   std::vector<Producer *> chefs;
   std::vector<Producer *> carpenters;
   std::vector<Producer *> gunsmiths;
@@ -37,10 +38,8 @@ class Orchestator {
   std::vector<Gatherer *> create_start_gatherers(int quantity,
                                       BlockingQueueResource &queue,
                                       InventoryMonitor &inventory_monitor);
-  void spawn_gatherers(const std::map<std::string, int> &workers,
-    InventoryMonitor &inventory_monitor);
-  void spawn_producers(const std::map<std::string, int> &workers,
-    InventoryMonitor &inventory_monitor);
+  void spawn_gatherers(InventoryMonitor &inventory_monitor);
+  void spawn_producers(InventoryMonitor &inventory_monitor);
   void join_and_destroy_producers(std::vector<Producer *> producers);
   void join_and_destroy_gatherers(std::vector<Gatherer *> gatherers);
 
