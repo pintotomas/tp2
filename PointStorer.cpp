@@ -1,4 +1,5 @@
 #include "PointStorer.h"
+#include <utility>
 
 PointStorer::PointStorer()
     : points_accumulated(0), mutex() {}

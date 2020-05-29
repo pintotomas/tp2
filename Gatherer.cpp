@@ -3,8 +3,9 @@
 #include "exceptions.h"
 #define SLEEP_TIME 50
 
-Gatherer::Gatherer(BlockingQueueResource &queue, 
-  InventoryMonitor &inventory_monitor) : queue(queue), inventory_monitor(inventory_monitor) {
+Gatherer::Gatherer
+  (BlockingQueueResource &queue, InventoryMonitor &inventory_monitor) 
+  : queue(queue), inventory_monitor(inventory_monitor) {
 }
 
 void Gatherer::run() {

@@ -1,6 +1,7 @@
 #include "Inventory.h"
 #include <string>
 #include <map>
+#include <utility>
 
 const std::map<Resource, int > resources_stock =  {
   { Resource::hierro, 0 },

@@ -1,6 +1,6 @@
 #include "BlockingQueueResource.h"
 #include "exceptions.h"
-
+#include <utility>
 #include <string>
 
 BlockingQueueResource::BlockingQueueResource()

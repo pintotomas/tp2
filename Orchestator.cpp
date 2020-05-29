@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <utility>
 
 std::map<std::string, int> Orchestator::parse_workers() {
     std::map<std::string, int> workers;
@@ -91,7 +92,6 @@ void Orchestator::parse_map() {
 Orchestator::Orchestator(std::ifstream& workers_file, std::ifstream& map_file) :
 workers_file(workers_file), map_file(map_file) {
   workers = parse_workers();
-
 }
 
 Orchestator::~Orchestator() {}
