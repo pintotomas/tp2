@@ -3,15 +3,10 @@
 #include <map>
 #include <string>
 
-std::map<Resource, int > carpenter_requirements =	{
-	{ Resource::hierro, 1 },
-	{ Resource::madera, 3 }
-};
-
-const int carpenter_benefit_points = 2;
-
-Carpenter::Carpenter(InventoryMonitor &inventory_monitor,
- PointStorer &point_storer)
-    : Producer(inventory_monitor, carpenter_requirements,
-     carpenter_benefit_points, 
-    	point_storer) {}
+Carpenter::Carpenter
+    (InventoryMonitor &inventory_monitor, PointStorer &point_storer)
+    : Producer(inventory_monitor, point_storer) {
+    	requirements.emplace(Resource::hierro, 1);
+    	requirements.emplace(Resource::madera, 3);
+    	benefit_points = 2;
+    }
