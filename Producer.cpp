@@ -11,8 +11,8 @@ void Producer::run() {
     try {
       if (inventory_monitor.inventory_handle_requirements
          (requirements)) {
-        point_storer.add_points(benefit_points);
         usleep(SLEEP_TIME);
+        point_storer.add_points(benefit_points);
       }
       } catch(NoMoreFutureResourcesException){
       break;
