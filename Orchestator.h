@@ -30,6 +30,7 @@ class Orchestator {
   std::vector<Gatherer *> farmers;
   std::vector<Gatherer *> lumberjacks;
   std::vector<Gatherer *> miners;
+  bool finished_threads = false;
   void close_queues_finish_threads();
   std::map<std::string, int> parse_workers();
   void parse_map();

@@ -60,6 +60,7 @@ void Orchestator::close_queues_finish_threads() {
     join_and_destroy_producers(chefs);
     join_and_destroy_producers(carpenters);
     join_and_destroy_producers(gunsmiths);
+    finished_threads = true;
 }
 
 void Orchestator::join_and_destroy_gatherers
@@ -94,7 +95,11 @@ workers_file(workers_file), map_file(map_file) {
   workers = parse_workers();
 }
 
-Orchestator::~Orchestator() {}
+Orchestator::~Orchestator() {
+  if (!finished_threads) {
+    close_queues_finish_threads();
+  }
+}
 
 void Orchestator::print_results() {
   int remaining_trigo = inventory.remaining_quantity(Resource::trigo);
