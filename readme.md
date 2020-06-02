@@ -48,3 +48,19 @@ Nota: Omiti la llamada a lock(mutex) al acceder al monitor para hacer al diagram
 ## Aclaraciones
 
 - Intente guardar tanto a los productores como a los recolectores en tan solo dos vectores, pero no logre que compilara mi solucion y decidi dejarlos en vectores separados a cada tipo de productor y recolector
+
+## Correcciones
+
+- Indentacion en firmas de funciones si las parto en multiples lineas para que sea mas legible
+
+- Nombres de variables y metodos en un unico idioma (ingles)
+
+- Pasaje por referencia en vez de punteros (o copias) en toda la aplicacion.
+
+- El destructor hace el cerrado de las colas y join de los threads si no fue hecho anteriormente (lo hice de esta manera por el problema que comente en el [post de google groups](https://groups.google.com/forum/#!topic/tallerdeprogramacion/-UTyDwNuSkY))
+
+- Uso std::move para devolver los vectores en vez de devolver una copia. Tambien los construyo in place
+
+- Eliminacion de las variables globales de los mapas con los requisitos de cada productor. Ahora se inicializa en el constructor, evitando tambien su copia.
+
+- El productor duerme antes de agregar los puntos
